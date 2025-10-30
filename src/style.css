@@ -1,0 +1,99 @@
+:root {
+  --bg: #0a0a0a;
+  --bg-900: #070707;
+  --surface: #0f0f10;
+  --gold-1: #D4AF37;
+  --gold-2: #F4C430;
+  --gold-a: rgba(212,175,55,0.12);
+  --muted: rgba(245,242,235,0.75);
+  --glass: rgba(255,255,255,0.03);
+  --radius: 12px;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: dark;
+  color: #f5f2eb;
+  background-color: var(--bg);
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* layout */
+html, body, #app { height:100%; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: radial-gradient(900px 400px at 10% 10%, rgba(212,175,55,0.02), transparent), var(--bg);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  color: var(--muted);
+  transition: background 300ms ease;
+}
+
+/* basic button reset */
+button { font-family: inherit; }
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* primary gold button */
+.btn-gold {
+  background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
+  color:#0b0b0b;
+  border: 1px solid rgba(212,175,55,0.14);
+  box-shadow: 0 6px 24px rgba(212,175,55,0.06);
+}
+.btn-gold:hover { filter: brightness(1.06); box-shadow: 0 10px 36px rgba(212,175,55,0.12); }
+
+.card {
+  padding: 2em;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border-radius: var(--radius);
+}
+
+/* animations */
+@keyframes fadeInUp {
+  from { opacity:0; transform: translateY(8px); }
+  to { opacity:1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 360ms cubic-bezier(.2,.9,.2,1) both; }
+
+/* thin gold border helper */
+.border-gold {
+  border: 1px solid rgba(212,175,55,0.08);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+}
+
+/* small text */
+.small { font-size:0.9rem; color: rgba(245,242,235,0.65); }
+
+#app {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* keep the project's original small styles */
+.read-the-docs { color: #888; }
+
