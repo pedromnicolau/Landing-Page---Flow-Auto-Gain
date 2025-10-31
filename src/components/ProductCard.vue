@@ -46,36 +46,27 @@
 </template>
 
 <script>
-import { offerUrl } from '../data/products.js';
 export default {
   name: 'ProductCard',
   props: {
     product: { type: Object, required: true },
   },
   methods: {
-    offerUrl,
-    // novo: redireciona e emite o evento com a url escolhida
     handleClick(key, plan) {
-      const url = (plan && plan.url) ? plan.url : this.offerUrl(this.product.id, key);
-      // emite para o pai a oferta selecionada incluindo a url usada
+      const url = (plan && plan.url) ? plan.url : null;
       this.$emit('select-offer', { productId: this.product.id, name: this.product.name, planKey: key, plan, url });
-      // redireciona para o link (mesma aba). Use window.open(url, '_blank') se preferir nova aba.
-      window.location.href = url;
     },
     splitPrice(details) {
       if (!details) return { main: '', sub: '' };
 
-      // 1) Caso mensal (ex: "1X de R$399,99 PIX, Boleto, ou Cartão de Crédito")
-      //    -> capturar até o valor R$xxx como main e o resto como sub (formas de pagamento)
       const moneyMatch = details.match(/^([\s\S]*?R\$\s*\d[\d.,]*)([\s\S]*)$/i);
       if (/1x\s+de/i.test(details) && moneyMatch) {
         const main = moneyMatch[1].trim();
         let sub = (moneyMatch[2] || '').trim();
-        sub = sub.replace(/^[,.\s-]+/, ''); // remove prefixo indesejado
+        sub = sub.replace(/^[,.\s-]+/, '');
         return { main, sub };
       }
 
-      // 2) Se houver " ou " (trimestral / anual com pagamento à vista), dividir por ele e preservar "ou"
       const parts = details.split(/\s+ou\s+/i);
       if (parts.length > 1) {
         const main = parts[0] ? parts[0].trim() : '';
@@ -83,20 +74,17 @@ export default {
         return { main, sub };
       }
 
-      // 3) Fallback: se houver R$ em algum lugar, usar a primeira ocorrência como main e resto como sub
       if (moneyMatch) {
         const main = moneyMatch[1].trim();
         const sub = (moneyMatch[2] || '').trim().replace(/^[,.\s-]+/, '');
         return { main, sub };
       }
 
-      // 4) tudo vira main se não achou nada
       return { main: details.trim(), sub: '' };
     }
   },
   computed: {
     features() {
-      // listas fornecidas
       const robots = [
         { title: "Gamma Sniper", description: "Versão mais ativa da automação.", features: ["Entra em praticamente todos os sinais detectados","Busca aproveitar ao máximo cada oportunidade do mercado","Ideal para quem quer atingir a meta rapidamente","Não se importa em assumir um risco maior de oscilações","Possíveis perdas no caminho"] },
         { title: "Gamma Smart", description: "Equilibra agressividade e cautela.", features: ["Realiza entradas estratégicas","Faz pequenas pausas para reavaliar o cenário","Busca novas oportunidades","Número moderado de operações no dia","Foco maior em qualidade de entradas"] },
@@ -124,7 +112,6 @@ export default {
       const foundInIndicators = indicators.find(i => i.title === name);
       if (foundInIndicators) return foundInIndicators.features;
 
-      // se product já trouxer features, usá-las
       if (Array.isArray(this.product.features)) return this.product.features;
       return [];
     }
@@ -136,12 +123,12 @@ export default {
 .product-card {
   background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.005));
   border-radius: 12px;
-  padding:1.6rem; /* aumentou o padding interno do card */
+  padding:1.6rem;
   color:#f5f2eb;
   display:flex;
   flex-direction:column;
   gap:0.8rem;
-  border: 1px solid var(--gold-1); /* borda dourada igual ao botão comprar */
+  border: 1px solid var(--gold-1);
   transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease, border-color 180ms ease;
   will-change: transform, box-shadow, border-color;
   transform-origin: center;
@@ -155,27 +142,49 @@ export default {
 
 .product-title {
   font-weight: 900;
-  font-size: clamp(1.2rem, 2.4vw, 1.6rem); /* maior e responsivo */
+  font-size: clamp(1.25rem, 2.6vw, 1.8rem); /* aumentado levemente */
   color: #f8ecd8;
   letter-spacing: 0.2px;
   text-align: left;
 }
-.product-category { font-size:0.78rem; color:rgba(245,242,235,0.65); background: rgba(212,175,55,0.1); padding:0.25rem 0.5rem; border-radius:8px; border:1px solid rgba(212,175,55,0.1); }
-.product-desc { color:rgba(245,242,235,0.62); font-size:0.9rem; margin:0; }
-.product-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
-.feature-item { display:flex; align-items:flex-start; gap:10px; color: rgba(245,242,235,0.88); font-size:0.9rem; }
 
-.feature-item .check {
-  justify-content:center;
-  width:32px;
-  height:32px;
-  color: var(--gold-1);
-  font-weight:700;
-  font-size: 1rem;
+/* categoria com texto um pouco maior */
+.product-category {
+  font-size: 0.9rem;
+  color: rgba(245,242,235,0.65);
+  background: rgba(212,175,55,0.1);
+  padding: 0.3rem 0.6rem; /* levemente maior para equilibrar */
+  border-radius: 8px;
+  border: 1px solid rgba(212,175,55,0.1);
 }
 
-/* aumentar gap entre check e texto para manter proporção com novo tamanho */
-.feature-item { gap:8px; }
+/* detalhe do produto (ajuste sutil) */
+.product-desc { color:rgba(245,242,235,0.62); font-size:1.06rem; margin:0; }
+
+/* features: tamanho um pouco maior para melhor leitura */
+.product-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size:1.04rem; } /* gap aumentado */
+
+.feature-item { display:flex; align-items:flex-start; gap:14px; color: rgba(245,242,235,0.88); font-size:1.02rem; } /* gap horizontal aumentado */
+
+/* check maior e com melhor alinhamento */
+.feature-item .check {
+  justify-content:center;
+  width:40px;   /* aumentado para alinhamento */
+  height:40px;  /* aumentado para alinhamento */
+  color: var(--gold-1);
+  font-weight:700;
+  font-size: 1.3rem; /* aumentado */
+  line-height: 40px;
+}
+
+/* garante que o texto da feature fique alinhado à esquerda e ocupe o espaço restante */
+.feature-text {
+  flex: 1;
+  text-align: left;
+  display: block;
+  word-break: break-word;
+  font-size: 1.1rem;
+}
 
 .plans {
   display: flex;
@@ -216,7 +225,7 @@ export default {
   margin: 0;
   font-weight: 600;
   color: #f8ecd8;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1;
   display: block;
   overflow: hidden;
@@ -229,7 +238,7 @@ export default {
 /* destaque para a parte principal (maior e mais proeminente) */
 .price-main {
   display: block;
-  font-size: 1.02rem;
+  font-size: 1.18rem;
   font-weight: 800;
   color: #f8ecd8;
   line-height: 1.1;
@@ -239,7 +248,7 @@ export default {
 .price-sub {
   display: block;
   margin-top: 4px;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: rgba(245,242,235,0.7);
   font-weight: 600;
 }
@@ -250,7 +259,7 @@ export default {
 .plans-title {
   color: rgba(245,242,235,0.86);
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: 1rem;
   text-align: left;
 }
 .plans-separator {

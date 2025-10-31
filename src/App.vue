@@ -4,86 +4,80 @@
     <HeaderNav />
 
     <!-- route switch: main app vs pages -->
-    <main v-if="route === '/' || route === ''">
+    <main v-if="route === '/' || route === ''" class="container">
       <section class="hero">
-        <div class="hero-left">
-          <h1>Robôs e Indicadores profissionais para a B3</h1>
-          <p class="subtitle">
-            Soluções automáticas e indicadores para operadores que buscam
-            consistência e um sistema profissional. Pacotes e planos mensais,
-            trimestrais e anuais.
-          </p>
-          <div class="hero-cta">
-            <a href="#robos" class="primary">Ver Robôs</a>
-            <a href="#pacotes" class="ghost">Pacotes e Indicadores</a>
-          </div>
+      <div class="hero-left">
+        <h1 class="hero-title">
+          Robôs e Indicadores <span class="gold-text">Profissionais</span> para a B3
+        </h1>
+        <p class="subtitle">
+          Soluções automáticas e indicadores para operadores que buscam
+          consistência e um sistema profissional. Pacotes e planos mensais,
+          trimestrais e anuais.
+        </p>
+        <div class="hero-cta">
+          <a href="#robos" class="primary">Ver Robôs</a>
+          <a href="#pacotes" class="ghost">Pacotes e Indicadores</a>
         </div>
-        <div class="hero-right">
-          <div class="hero-visual">
-            <!-- grafico estilizado -->
-            <svg viewBox="0 0 200 120" class="chart">
-              <defs>
-                <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0" stop-color="#b8860b" />
-                  <stop
-                    offset="1"
-                    stop-color="#f5f2eb"
-                    stop-opacity="0.1"
-                  />
-                </linearGradient>
-              </defs>
-              <rect width="100%" height="100%" fill="transparent" />
-              <path
-                d="M0 80 L20 60 L40 70 L60 40 L80 50 L100 30 L120 45 L140 25 L160 35 L180 20 L200 30"
-                fill="none"
-                stroke="#b8860b"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-      </section>
+      </div>
 
-      <!-- Telegram CTAs: Grupo e Copy Trade -->
+      <div class="hero-right">
+        <img
+          ref="mascotsImg"
+          src="/mascotes.png"
+          alt="Mascotes — touro e urso"
+          class="mascots"
+          loading="lazy"
+          aria-hidden="true"
+        />
+      </div>
+    </section>
+
+
       <div class="telegram-cta" role="navigation" aria-label="Links para Telegram">
-        
-        <a
-          class="tg-btn tg-group"
-          href="https://t.me/+1h9O__7JFzZjM2Fh"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Entrar no Grupo Automações no Telegram"
-        >
-          <span class="tg-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 2L11 13"></path>
-              <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
-            </svg>
-          </span>
-          <span class="tg-label">
-            Grupo Automações
-          </span>
-        </a>
+        <div class="centered">
+          <h2 class="tg-title">Grupo Automações</h2>
+          <p>Entre para o nosso grupo do Telegram para receber TODOS OS ROBÔS E INDICADORES GRATUITAMENTE para teste, e também um CUPOM DE 20% DE DESCONTO na pré-venda:</p>
+          <a
+            class="tg-btn tg-group"
+            href="https://t.me/+1h9O__7JFzZjM2Fh"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Entrar no Grupo Automações no Telegram"
+          >
+            <span class="tg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 2L11 13"></path>
+                <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
+              </svg>
+            </span>
+            <span class="tg-label">
+              Grupo Automações
+            </span>
+          </a>
+        </div>
 
-        <a
-          class="tg-btn tg-copy"
-          href="https://t.me/cleitinhotrader?text=Quero%20saber%20mais%20sobre%20o%20copy%20trade."
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Saber mais sobre Copy Trade no Telegram"
-        >
-          <span class="tg-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 2L11 13"></path>
-              <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
-            </svg>
-          </span>
-          <span class="tg-label">
-            Copy Trade — Saiba mais
-          </span>
-        </a>
+        <div class="centered">
+          <h2 class="tg-title">Copy Trade</h2>
+          <p>Copie automaticamente em tempo real as operações dos nossos traders profissionais. Transparência, praticidade e resultado — tudo integrado ao seu Profit 👇</p>
+          <a
+            class="tg-btn tg-copy"
+            href="https://t.me/cleitinhotrader?text=Quero%20saber%20mais%20sobre%20o%20copy%20trade."
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Saber mais sobre Copy Trade no Telegram"
+          >
+            <span class="tg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 2L11 13"></path>
+                <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
+              </svg>
+            </span>
+            <span class="tg-label">
+              Copy Trade — Saiba mais
+            </span>
+          </a>
+        </div>
       </div>
 
       <section id="pacotes" class="products-section">
@@ -121,6 +115,17 @@
           />
         </div>
 
+        <!-- Linha de Alta frequência (aparece abaixo da Delta) -->
+        <h3 class="line-title">Linha de Alta frequência</h3>
+        <div class="grid">
+          <ProductCard
+            v-for="p in altaFreqLine"
+            :key="p.id"
+            :product="p"
+            @select-offer="openOffer"
+          />
+        </div>
+
         <h3 class="line-title">Linha Alpha</h3>
         <div class="grid">
           <ProductCard
@@ -143,12 +148,6 @@
           />
         </div>
       </section>
-
-      <div class="risk-notice">
-        <strong>Aviso de Risco:</strong> Operar no mercado financeiro envolve
-        riscos. Você pode perder parte ou todo o capital investido. Leia os Termos
-        de Uso e a Política de Privacidade antes de comprar.
-      </div>
     </main>
 
     <TermsPage v-else-if="route === '/terms'" />
@@ -190,6 +189,11 @@ const deltaLine = computed(() =>
   robots.value.filter((p) => p.name.startsWith("Delta"))
 );
 
+// Linha de Alta frequência
+const altaFreqLine = computed(() =>
+  robots.value.filter((p) => p.line === 'Linha de alta frequência')
+);
+
 const alphaLine = computed(() =>
   robots.value.filter((p) => p.name.startsWith("Alpha"))
 );
@@ -213,6 +217,113 @@ function closeModal() {
   modalVisible.value = false;
   selectedOffer.value = null;
 }
+
+const mascotsImg = ref(null);
+
+// estado interno para o efeito (não reativo)
+const _mascots = {
+  clientX: null,
+  clientY: null,
+  rafId: null,
+  running: false,
+  maxTilt: 1,       // suavizado: menos inclinação (graus)
+  translateMax: 1,  // suavizado: menor deslocamento (px)
+};
+
+function _updateMascotsTransform() {
+  const img = mascotsImg.value;
+  if (!img) return;
+
+  const rect = img.getBoundingClientRect();
+
+  // reset suave se o ponteiro não estiver presente
+  if (_mascots.clientX == null || _mascots.clientY == null) {
+    img.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translate3d(0,0,0)';
+    return;
+  }
+
+  const cx = _mascots.clientX;
+  const cy = _mascots.clientY;
+
+  // normaliza -1..1 com base no centro do elemento
+  const relX = ((cx - (rect.left + rect.width / 2)) / rect.width) * 2;
+  const relY = ((cy - (rect.top + rect.height / 2)) / rect.height) * 2;
+  const clamp = (v) => Math.max(-1, Math.min(1, v));
+  const nx = clamp(relX);
+  const ny = clamp(relY);
+
+  const max = _mascots.maxTilt;
+
+  // fazer a imagem "olhar" para o cursor
+  const rotateX = ny * max;
+  const rotateY = -nx * max;
+
+  // pequena translação para parallax
+  const tx = nx * _mascots.translateMax * -1;
+  const ty = ny * _mascots.translateMax * -1;
+
+  // reduzir profundidade (translateZ) para efeito mais sutil
+  img.style.transform = `perspective(800px) translate3d(${tx}px, ${ty}px, 3px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+}
+
+function _startMascotsRaf() {
+  if (_mascots.rafId) return;
+  _mascots.running = true;
+  const loop = () => {
+    _updateMascotsTransform();
+    _mascots.rafId = requestAnimationFrame(loop);
+  };
+  _mascots.rafId = requestAnimationFrame(loop);
+}
+
+function _stopMascotsRaf() {
+  if (_mascots.rafId) {
+    cancelAnimationFrame(_mascots.rafId);
+    _mascots.rafId = null;
+  }
+  _mascots.running = false;
+}
+
+onMounted(() => {
+  const target = window;
+  const onPointerMove = (e) => {
+    const cx = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
+    const cy = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+    _mascots.clientX = cx;
+    _mascots.clientY = cy;
+    if (!_mascots.running) _startMascotsRaf();
+  };
+
+  const onPointerEnd = () => {
+    _mascots.clientX = null;
+    _mascots.clientY = null;
+    if (!_mascots.running) _startMascotsRaf();
+    // allow RAF to run one more frame to reset, then stop shortly after
+    setTimeout(() => _stopMascotsRaf(), 220);
+  };
+
+  target.addEventListener('pointermove', onPointerMove, { passive: true });
+  target.addEventListener('mousemove', onPointerMove, { passive: true });
+  target.addEventListener('pointerleave', onPointerEnd, { passive: true });
+  target.addEventListener('touchend', onPointerEnd, { passive: true });
+
+  // guardar refs para remoção
+  _mascots._onPointerMove = onPointerMove;
+  _mascots._onPointerEnd = onPointerEnd;
+});
+
+onBeforeUnmount(() => {
+  const target = window;
+  if (_mascots._onPointerMove) {
+    target.removeEventListener('pointermove', _mascots._onPointerMove);
+    target.removeEventListener('mousemove', _mascots._onPointerMove);
+  }
+  if (_mascots._onPointerEnd) {
+    target.removeEventListener('pointerleave', _mascots._onPointerEnd);
+    target.removeEventListener('touchend', _mascots._onPointerEnd);
+  }
+  _stopMascotsRaf();
+});
 </script>
 
 <style scoped>
@@ -225,7 +336,6 @@ function closeModal() {
   flex-direction: column;
 }
 
-/* HERO: keep two-column on large, switch to single-column on smaller screens, reduce gaps */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -274,13 +384,37 @@ function closeModal() {
 .hero-right .hero-visual {
   background: linear-gradient(180deg, #0b0b0b, #121212);
   border-radius: 12px;
-  padding: 0.5rem; /* manter proporção com container reduzido */
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 200px;
+  height: 320px; /* maior para comportar mascotes em desktop */
   border: 1px solid rgba(212,175,55,0.06);
   box-shadow: 0 18px 44px rgba(0,0,0,0.7);
+}
+
+/* imagem responsiva dentro do visual */
+.mascots {
+  width: 100%;
+  max-height: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border: 2px solid rgba(212,175,55);
+  border-radius: 20px;
+
+  /* performance + suavização do movimento */
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform 200ms cubic-bezier(.2,.8,.2,1);
+}
+
+/* responsividade: reduzir visual em telas menores */
+@media (max-width: 900px) {
+  .hero-right .hero-visual { height: 260px; }
+}
+@media (max-width: 640px) {
+  .hero-right .hero-visual { height: 200px; }
 }
 
 .chart {
@@ -305,10 +439,12 @@ function closeModal() {
 
 .products-section {
   margin-top: 6rem;
+  text-align: center;
 }
 .products-section h2 {
   color: #f8ecd8;
   margin-bottom: 1.5rem;
+  font-size: 32px;
 }
 
 /* título das linhas (subseções dentro de Robôs) */
@@ -325,58 +461,41 @@ function closeModal() {
   gap: 2rem;
 }
 
-/* === CHANGE: força 3 colunas para a seção "Robôs" (desktop), but responsive down to 1 column === */
+/* === CHANGE: força 3 colunas para a seção "Robôs" (3x3) === */
 #robos .grid {
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
 }
-@media (max-width: 1200px) {
-  #robos .grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
-}
-@media (max-width: 700px) {
-  #robos .grid { grid-template-columns: 1fr; gap: 1.25rem; }
-}
 
-/* Indicadores: 4 columns on wide, progressively reduce */
+/* === Novas regras: Indicadores = 4 colunas, Pacotes = 3 colunas === */
+
+/* Indicadores: 4 colunas em desktop, reduz para 3/2/1 em larguras menores */
 #indicadores .grid {
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 }
-@media (max-width: 1400px) {
+@media (max-width: 1200px) {
   #indicadores .grid { grid-template-columns: repeat(3, 1fr); }
 }
-@media (max-width: 1000px) {
-  #indicadores .grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (max-width: 900px) {
+  #indicadores .grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 640px) {
-  #indicadores .grid { grid-template-columns: 1fr; gap: 0.9rem; }
+@media (max-width: 600px) {
+  #indicadores .grid { grid-template-columns: 1fr; }
 }
 
-/* Pacotes: 3 colunas on desktop, reduce to 2/1 */
+/* Pacotes: 3 colunas em desktop, reduz para 2/1 em larguras menores */
 #pacotes .grid {
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
 }
 @media (max-width: 1100px) {
-  #pacotes .grid { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
+  #pacotes .grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
-  #pacotes .grid { grid-template-columns: 1fr; gap: 1rem; }
+  #pacotes .grid { grid-template-columns: 1fr; }
 }
 
-/* risk */
-.risk-notice {
-  margin-top: 1.2rem;
-  background: rgba(184, 134, 11, 0.04);
-  padding: 0.8rem;
-  border-radius: 8px;
-  color: rgba(245, 242, 235, 0.85);
-  border: 1px solid rgba(184, 134, 11, 0.03);
-  font-size: 0.95rem;
-  text-align: center;
-}
-
-/* Telegram CTAs: Grupo e Copy Trade - ensure wrap on small screens */
 .telegram-cta {
   width: 100%;
   display: flex;
@@ -386,8 +505,8 @@ function closeModal() {
   margin: 1.2rem 0;
   padding: 0 1rem;
   box-sizing: border-box;
-  flex-wrap: wrap;
 }
+
 .tg-btn {
   display: inline-flex;
   align-items: center;
@@ -401,7 +520,6 @@ function closeModal() {
   border: 1px solid rgba(2,136,209,0.12);
   box-shadow: 0 8px 24px rgba(2,136,209,0.06);
   transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
-  white-space: nowrap;
 }
 .tg-btn:hover {
   transform: translateY(-3px);
@@ -428,51 +546,21 @@ function closeModal() {
 
 /* responsividade */
 @media (max-width: 640px) {
-  .telegram-cta { flex-direction: column; gap: 10px; padding: 0 0.6rem; }
+  .telegram-cta { flex-direction: column; gap: 10px; }
   .tg-btn { width: 100%; justify-content: center; padding: 0.65rem; }
 }
 
-/* HERO responsive adjustments */
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 1.4rem 0;
   }
   .hero-right {
     order: 2;
   }
   .hero-left h1 { font-size:1.8rem; }
-  .hero-left .subtitle { margin-bottom: 2rem; }
-  .hero-right .hero-visual { height: 180px; }
-  .chart { max-width: 420px; }
-
-  /* Mobile CTA: stack buttons and add vertical gap */
-  .hero-cta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem; /* margem entre os botões no mobile */
-    align-items: stretch;
-  }
-  /* remove desktop right-margin on mobile and make buttons fill horizontally */
-  .hero-cta a {
-    margin-right: 0;
-    width: 100%;
-    justify-content: center;
-  }
 }
 
-/* Tighten for very small screens */
-@media (max-width: 420px) {
-  .hero-left h1 { font-size: 1.4rem; line-height: 1.1; }
-  .subtitle { font-size: 0.95rem; margin-bottom: 1.4rem; }
-  .hero-right .hero-visual { height: 140px; padding: 0.4rem; }
-  .app-root { padding-top: 72px; }
-  .page-actions { flex-direction: column; gap: 8px; }
-  .page-actions a { width: 100%; text-align: center; }
-}
-
-/* Add small utility for page wrappers used on Terms/Privacy */
+/* Add a small utility for page wrappers used on Terms/Privacy */
 .page-content {
   max-width: 980px;
   margin: 3rem auto;
@@ -507,18 +595,18 @@ function closeModal() {
   color:#111;
 }
 
-/* Accessibility: ensure tap targets are large enough on touch devices */
-.tg-btn, .primary, .ghost, .page-actions a {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.container {
+  width: 80%;
+  margin: 0 auto;
 }
 
-/* Small performance: reduce heavy shadows on small screens */
-@media (max-width: 640px) {
-  .hero-right .hero-visual, .page-content {
-    box-shadow: 0 8px 18px rgba(0,0,0,0.5);
-  }
+.centered{
+  text-align: center;
+}
+
+.tg-title {
+  font-size: 28px;
+  margin-bottom: 0.6rem;
+  color: rgba(212,175,55);
 }
 </style>

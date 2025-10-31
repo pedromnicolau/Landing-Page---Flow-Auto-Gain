@@ -1,83 +1,178 @@
 <template>
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="brand">
-        <div class="logo">Flow Auto Gain</div>
-        <p class="tagline">Robôs e Indicadores profissionais para a B3</p>
+      <div class="footer-top">
+        <div class="brand">
+          <div class="logo">Flow Auto Gain</div>
+          <p class="tagline">Automatize seus lucros no mercado financeiro com robôs e indicadores profissionais para a B3.</p>
+          <div class="icons">
+            <!-- substitua src por assets reais se tiver -->
+            <img src="/bull.png" alt="bull" class="icon" />
+            <img src="/bear.png" alt="bear" class="icon" />
+          </div>
+        </div>
+
+        <div class="quick-links" aria-label="Links Rápidos">
+          <h4>Links Rápidos</h4>
+          <ul>
+            <li><a href="#/robots">Robôs</a></li>
+            <li><a href="#/indicators">Indicadores</a></li>
+            <li><a href="#/packages">Pacotes</a></li>
+            <li><a href="#/terms">Termos de Uso</a></li>
+            <li><a href="#/privacy">Política de Privacidade</a></li>
+          </ul>
+        </div>
+
+        <div class="contact">
+          <h4>Contato</h4>
+          <p class="contact-line"><span class="mail">✉️</span> <a href="mailto:contato@flowautogain.com">contato@flowautogain.com</a></p>
+          <p class="contact-line"><span class="tg">💬</span> <a href="https://t.me/+1h9O__7JFzZjM2Fh" target="_blank" rel="noopener noreferrer">Suporte via Telegram</a></p>
+        </div>
       </div>
 
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="#/" class="nav-link">Início</a>
-        <a href="#/terms" class="nav-link">Termos de Uso</a>
-        <a href="#/privacy" class="nav-link">Política de Privacidade</a>
-        <a href="https://t.me/+1h9O__7JFzZjM2Fh" target="_blank" rel="noopener noreferrer" class="nav-link">Telegram</a>
-      </nav>
+      <hr class="divider" />
 
-      <div class="legal">
-        <p>Suporte: <a href="mailto:suporte@flowautogain.com">suporte@flowautogain.com</a></p>
-        <p class="copyright">© { new Date().getFullYear() } Flow Auto Gain — Todos os direitos reservados.</p>
+      <div class="footer-bottom">
+        <div class="risk-box" role="note" aria-live="polite">
+          <strong>AVISO DE RISCO:</strong> Operar no mercado financeiro envolve riscos significativos. Você pode perder parte ou todo o capital investido. Os resultados passados não garantem resultados futuros. Invista apenas valores que você pode se dar ao luxo de perder.
+        </div>
+
+        <div class="copyright">
+          © {{ year }} Flow Auto Gain. Todos os direitos reservados.
+        </div>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup>
-// nenhum JS adicional necessário atualmente
+const year = new Date().getFullYear();
 </script>
 
 <style scoped>
 .site-footer {
   border-top: 1px solid rgba(245,242,235,0.03);
-  padding: 2rem 1rem;
+  padding: 3rem 1rem;
   margin-top: 3.2rem;
-  color: rgba(245,242,235,0.9);
+  color: rgba(245,242,235,0.92);
   background: linear-gradient(180deg, transparent, rgba(0,0,0,0.12));
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
+
+/* container */
 .footer-inner {
-  max-width: 1100px;
+  width: 80%;
   margin: 0 auto;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.4rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1.6rem;
 }
+
+/* top area with 3 columns */
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 320px;
+  gap: 1.6rem;
+  align-items: start;
+}
+
+/* Brand column */
 .brand .logo {
   font-weight: 800;
   color: #f8ecd8;
   letter-spacing: -0.4px;
-  font-size: 1.05rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.35rem;
 }
 .brand .tagline {
-  margin:0.4rem 0 0;
+  margin: 0.2rem 0 0.8rem;
   color: rgba(245,242,235,0.72);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  max-width: 380px;
 }
-.footer-nav {
+.icons { display:flex; gap:0.6rem; margin-top:0.6rem; }
+.icon { width:40px; height:40px; object-fit:cover; border-radius:6px; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+
+/* Quick links */
+.quick-links h4,
+.contact h4 {
+  color: #f8ecd8;
+  margin: 0 0 0.6rem 0;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.quick-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display:flex;
-  gap: 1rem;
-  align-items:center;
-  flex-wrap:wrap;
+  flex-direction:column;
+  gap:0.5rem;
 }
-.nav-link {
+.quick-links a {
   color: rgba(245,242,235,0.9);
-  text-decoration:none;
-  font-weight:700;
-  padding: 0.4rem 0.6rem;
-  border-radius:8px;
-  transition: background .15s ease, transform .12s ease;
+  text-decoration: none;
+  font-weight:600;
+  transition: color .12s ease, transform .12s ease;
 }
-.nav-link:hover { background: rgba(184,134,11,0.06); transform: translateY(-2px); }
+.quick-links a:hover { color: #ffd66b; transform: translateX(4px); }
 
-.legal {
-  color: rgba(245,242,235,0.7);
+/* Contact column */
+.contact .contact-line {
+  margin: 0.35rem 0;
+  color: rgba(245,242,235,0.82);
+  font-size: 0.95rem;
+}
+.contact a { color: #b8860b; font-weight:700; text-decoration:none; }
+.contact a:hover { text-decoration: underline; }
+
+/* divider */
+.divider {
+  border: none;
+  border-top: 1px solid rgba(245,242,235,0.04);
+  margin: 0.6rem 0;
+}
+
+/* bottom area */
+.footer-bottom {
+  display:flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* risk box */
+.risk-box {
+  border: 1px solid rgba(186, 60, 60, 0.95);
+  background: rgba(86, 15, 15, 0.06);
+  color: rgba(245,242,235,0.92);
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.risk-box strong { color: #ff6b6b; margin-right: 0.4rem; }
+
+/* copyright */
+copyright,
+.copyright {
+  color: rgba(245,242,235,0.6);
   font-size: 0.9rem;
-  text-align: right;
+  text-align: center;
+  width:100%;
 }
-.legal a { color: #b8860b; text-decoration: none; font-weight:700; }
 
-@media (max-width: 720px) {
-  .footer-inner { flex-direction: column; align-items: flex-start; }
-  .legal { text-align: left; width:100%; margin-top:0.8rem; }
+/* responsiveness */
+@media (max-width: 900px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .contact { grid-column: span 2; }
+  .brand .tagline { max-width: none; }
+}
+@media (max-width: 560px) {
+  .footer-top { grid-template-columns: 1fr; }
+  .contact { grid-column: auto; }
+  .icons { gap:0.4rem; }
+  .icon { width:34px; height:34px; }
+  .risk-box { font-size: 0.9rem; padding: 0.9rem; }
 }
 </style>

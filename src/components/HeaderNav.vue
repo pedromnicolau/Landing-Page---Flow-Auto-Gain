@@ -11,8 +11,9 @@
         aria-label="Ir para a página inicial"
       >
         <div>
-          <!-- toggle image between bear and bull -->
+          <!-- adicionada ref para controlar via JS -->
           <img
+            ref="symbolImg"
             :src="isBull ? '/bull.png' : '/bear.png'"
             :alt="isBull ? 'Touro' : 'Urso'"
             :title="isBull ? 'Touro' : 'Urso'"
@@ -26,7 +27,49 @@
         <a href="#pacotes" @click.prevent="navigate('#pacotes')">Pacotes</a>
         <a href="#robos" @click.prevent="navigate('#robos')">Robôs</a>
         <a href="#indicadores" @click.prevent="navigate('#indicadores')">Indicadores</a>
-        <a href="#contato" class="cta" @click.prevent="navigate('#contato')">Comprar</a>
+
+        <!-- NEW: Telegram dropdown -->
+        <div
+          class="telegram-menu"
+          @keyup.enter="toggleTelegram"
+        >
+          <button
+            class="menu-button"
+            @click="toggleTelegram"
+            :aria-expanded="telegramOpen.toString()"
+            aria-haspopup="true"
+            aria-controls="telegram-dropdown"
+            aria-label="Abrir menu Telegram"
+            type="button"
+          >
+            Telegram <span class="chev" aria-hidden="true">▾</span>
+          </button>
+
+          <ul
+            id="telegram-dropdown"
+            class="dropdown"
+            v-show="telegramOpen"
+            role="menu"
+            @click.stop
+          >
+            <li role="none">
+              <a
+                role="menuitem"
+                href="https://t.me/+1h9O__7JFzZjM2Fh"
+                target="_blank"
+                rel="noopener noreferrer"
+              >Grupo Automações</a>
+            </li>
+            <li role="none">
+              <a
+                role="menuitem"
+                href="https://t.me/cleitinhotrader?text=Quero%20saber%20mais%20sobre%20o%20copy%20trade."
+                target="_blank"
+                rel="noopener noreferrer"
+              >Copy Trade</a>
+            </li>
+          </ul>
+        </div>
       </nav>
 
       <!-- Hamburger (mobile) -->
@@ -58,7 +101,22 @@
         <a href="#robos" role="menuitem" @click.prevent="navigate('#robos')">Robôs</a>
         <a href="#indicadores" role="menuitem" @click.prevent="navigate('#indicadores')">Indicadores</a>
         <a href="#pacotes" role="menuitem" @click.prevent="navigate('#pacotes')">Pacotes</a>
-        <a href="#contato" class="cta" role="menuitem" @click.prevent="navigate('#contato')">Comprar</a>
+
+        <!-- NEW: Telegram items for mobile -->
+        <a
+          href="https://t.me/+1h9O__7JFzZjM2Fh"
+          class="tg-mobile"
+          role="menuitem"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Grupo Automações</a>
+        <a
+          href="https://t.me/cleitinhotrader?text=Quero%20saber%20mais%20sobre%20o%20copy%20trade."
+          class="tg-mobile"
+          role="menuitem"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Copy Trade</a>
       </nav>
     </div>
   </header>
@@ -70,9 +128,69 @@ export default {
   data() {
     return {
       mobileOpen: false,
-      isBull: false
+      isBull: false,
+      telegramOpen: false
     };
   },
+
+  // adiciona listeners ao montar e limpa ao desmontar (compatível com Vue2/3)
+  mounted() {
+    // armazenamento interno para evitar re-criação de closures
+    this._symbol = {
+      clientX: 0,
+      clientY: 0,
+      rafId: null,
+      maxTilt: 15, // graus máximos
+      running: false,
+    };
+
+    // handler com binding para permitir remoção
+    this._onPointerMove = (e) => {
+      // pointer event ou mouse event compatível
+      const cx = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
+      const cy = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+      this._symbol.clientX = cx;
+      this._symbol.clientY = cy;
+      if (!this._symbol.running) this._startSymbolRaf();
+    };
+
+    // usar pointermove se disponível
+    const target = window;
+    target.addEventListener('pointermove', this._onPointerMove, { passive: true });
+    // fallback
+    target.addEventListener('mousemove', this._onPointerMove, { passive: true });
+
+    // stop on touchend to avoid stuck state
+    this._onPointerEnd = () => {
+      // reset suave para identidade
+      this._symbol.clientX = null;
+      this._symbol.clientY = null;
+      if (!this._symbol.running) this._startSymbolRaf();
+    };
+    target.addEventListener('pointerleave', this._onPointerEnd, { passive: true });
+    target.addEventListener('touchend', this._onPointerEnd, { passive: true });
+
+    // handlers para fechar dropdown Telegram ao clicar fora / Esc
+    this._onDocClick = (e) => {
+      try {
+        if (this.telegramOpen && !this.$el.contains(e.target)) this.closeTelegram();
+      } catch (err) { /* silent */ }
+    };
+    this._onDocKeydown = (e) => {
+      if (!this.telegramOpen) return;
+      if (e.key === 'Escape' || e.key === 'Esc') this.closeTelegram();
+    };
+    document.addEventListener('click', this._onDocClick, true);
+    document.addEventListener('keydown', this._onDocKeydown, true);
+  },
+
+  beforeDestroy() { // Vue 2
+    this._removeSymbolListeners();
+  },
+  beforeUnmount() { // Vue 3
+    this._removeSymbolListeners();
+  },
+
   methods: {
     toggleMobile() {
       this.mobileOpen = !this.mobileOpen;
@@ -85,6 +203,14 @@ export default {
       this.isBull = !this.isBull;
       // navigate to home (clears hash, scrolls to top and closes mobile menu)
       this.goHome();
+    },
+
+    toggleTelegram() {
+      this.telegramOpen = !this.telegramOpen;
+    },
+
+    closeTelegram() {
+      this.telegramOpen = false;
     },
 
     navigate(hash) {
@@ -115,6 +241,80 @@ export default {
         window.scrollTo(0, 0);
       }
       if (this.mobileOpen) this.toggleMobile();
+    },
+
+    // ----------------------------
+    // Novos métodos para acompanhar o mouse
+    // ----------------------------
+    _removeSymbolListeners() {
+      const target = window;
+      if (this._onPointerMove) {
+        target.removeEventListener('pointermove', this._onPointerMove);
+        target.removeEventListener('mousemove', this._onPointerMove);
+      }
+      if (this._onPointerEnd) {
+        target.removeEventListener('pointerleave', this._onPointerEnd);
+        target.removeEventListener('touchend', this._onPointerEnd);
+      }
+
+      // remover listeners do documento para dropdown Telegram
+      if (this._onDocClick) document.removeEventListener('click', this._onDocClick, true);
+      if (this._onDocKeydown) document.removeEventListener('keydown', this._onDocKeydown, true);
+
+      this._stopSymbolRaf();
+    },
+
+    _startSymbolRaf() {
+      if (this._symbol.rafId) return;
+      this._symbol.running = true;
+      const loop = () => {
+        this._updateSymbolTransform();
+        this._symbol.rafId = requestAnimationFrame(loop);
+      };
+      this._symbol.rafId = requestAnimationFrame(loop);
+    },
+
+    _stopSymbolRaf() {
+      if (this._symbol.rafId) {
+        cancelAnimationFrame(this._symbol.rafId);
+        this._symbol.rafId = null;
+      }
+      this._symbol.running = false;
+    },
+
+    _updateSymbolTransform() {
+      const img = this.$refs.symbolImg;
+      if (!img) return;
+
+      const rect = img.getBoundingClientRect();
+
+      // se não há coords (pointer saiu), animar retorno suave
+      if (this._symbol.clientX == null || this._symbol.clientY == null) {
+        img.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+        return;
+      }
+
+      const cx = this._symbol.clientX;
+      const cy = this._symbol.clientY;
+
+      // normaliza -1..1 com base no centro do elemento
+      const relX = ((cx - (rect.left + rect.width / 2)) / rect.width) * 2; // -1..1
+      const relY = ((cy - (rect.top + rect.height / 2)) / rect.height) * 2; // -1..1
+
+      const clamp = (v, a = -1, b = 1) => Math.max(a, Math.min(b, v));
+      const nx = clamp(relX);
+      const ny = clamp(relY);
+
+      const max = this._symbol.maxTilt;
+
+      // rotateX = movimento vertical (inverte y), rotateY = movimento horizontal (inverte x)
+      const rotateX = (-ny) * max;
+      const rotateY = nx * max * -1;
+
+      // pequena tradução Z para dar profundidade
+      const translateZ = 6;
+
+      img.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
     }
   }
 };
@@ -154,6 +354,8 @@ export default {
   gap:0.8rem; 
   height:72px; 
   cursor: pointer; 
+  /* adicionar perspectiva para filhos 3D */
+  perspective: 800px;
 }
 .brand img {
   width: 62px;
@@ -161,6 +363,10 @@ export default {
   object-fit: contain;
   display: block;
   transition: transform 180ms ease, opacity 140ms ease;
+  /* melhorar render 3D */
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* slight visual feedback when it's the bull */
@@ -194,6 +400,62 @@ export default {
   font-weight:700; 
 }
 
+/* Telegram menu styles */
+.telegram-menu {
+  position: relative;
+  display: inline-block;
+  margin-left: 0.6rem;
+}
+.menu-button {
+  background: linear-gradient(180deg,var(--gold-1),var(--gold-2));
+  color:#0b0b0b; font-weight:700;
+  border: none;
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.chev {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  line-height: 1;
+}
+
+/* dropdown panel */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 200px;
+  background: linear-gradient(180deg, #0b0b0b, #121212);
+  border: 1px solid rgba(212,175,55,0.06);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+  border-radius: 10px;
+  padding: 8px;
+  list-style: none;
+  margin: 0;
+  z-index: 10000;
+}
+.dropdown li {
+  margin: 0;
+}
+.dropdown a {
+  display: block;
+  padding: 8px 10px;
+  color: rgba(245,242,235,0.96);
+  text-decoration: none;
+  border-radius: 8px;
+}
+.dropdown a:hover {
+  background: rgba(212,175,55,0.04);
+  color: var(--gold-1);
+}
+
+/* Mobile menu */
 .hamburger {
   display: none;
   background: transparent;
@@ -232,16 +494,11 @@ export default {
   border-radius: 8px;
   text-decoration: none;
 }
-.mobile-navlinks a:hover { background: rgba(212,175,55,0.04); color: var(--gold-1); }
-.mobile-navlinks a.cta { background: linear-gradient(180deg,var(--gold-1),var(--gold-2)); color:#0b0b0b; font-weight:700; }
 
+/* ensure dropdown hidden on very small screens when switching to mobile menu */
 @media (max-width: 768px) {
-  .topbar-inner { padding: 0 6px; gap: 0.5rem; }
-  .navlinks { display: none; }
-  .hamburger { display: inline-flex; align-items:center; justify-content:center; }
-  .mobile-menu { display: block; }
+  .telegram-menu .dropdown { display: none !important; }
 }
-
 @media (max-width: 400px) {
   .title .logo { font-size: 0.95rem; }
   .title .subtitle { font-size: 0.75rem; }

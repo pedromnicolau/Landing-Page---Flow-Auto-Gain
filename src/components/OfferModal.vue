@@ -50,7 +50,8 @@ export default {
     buy() {
       if (!this.accepted) return;
       const url = this.offer?.url || '/';
-      window.open(url, '_blank');
+      // navegar na mesma aba após confirmação dos termos
+      window.location.href = url;
       this.$emit('close');
     },
   },
