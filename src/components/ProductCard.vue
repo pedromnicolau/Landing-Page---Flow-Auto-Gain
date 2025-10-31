@@ -283,4 +283,30 @@ export default {
 
 /* garante que o svg use a cor corrente do .plan-icon */
 .plan-icon svg { display:block; width:100%; height:100%; color: inherit; }
+
+/* tornar o cartão mais compacto em pequenos dispositivos */
+@media (max-width: 640px) {
+  .product-card {
+    padding: 1rem;
+  }
+  .product-title { font-size: 1.15rem; }
+  .feature-item .check { width: 34px; height: 34px; line-height: 34px; font-size: 1.05rem; }
+  .feature-text { font-size: 1rem; }
+  .plan-btn { padding: 12px; }
+  .plan-name { font-size: 1.05rem; }
+  .price-main { font-size: 1.02rem; }
+}
+
+/* em telas muito largas, exibir planos em linha para facilitar comparação */
+@media (min-width: 1000px) {
+  .plans { flex-direction: row; gap: 1rem; align-items: flex-start; }
+  .plan-btn { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .plan-head { margin-bottom: 8px; }
+  .plan-price { margin-top: auto; text-align: right; }
+}
+
+/* manter boa aparência em tablets */
+@media (min-width: 680px) and (max-width: 999px) {
+  .plans { gap: 0.9rem; }
+}
 </style>

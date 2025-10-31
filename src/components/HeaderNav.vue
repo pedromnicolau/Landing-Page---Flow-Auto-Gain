@@ -340,8 +340,8 @@ export default {
 
 .topbar-inner {
   width: 100%;
-  max-width: 90%;
-  padding: 0 5rem;
+  max-width: 1200px;
+  padding: 0 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -495,9 +495,23 @@ export default {
   text-decoration: none;
 }
 
-/* ensure dropdown hidden on very small screens when switching to mobile menu */
+/* reduzir padding e tornar layout adaptável */
+@media (max-width: 900px) {
+  .navlinks { display: none; } /* esconder links desktop */
+  .hamburger { display: inline-flex; } /* mostrar botão mobile */
+  .topbar-inner { padding: 0 0.9rem; }
+  .brand img { width: 52px; height: 52px; }
+}
+
+/* mobile breakpoint: ajustar dropdown transform/position if needed */
+@media (max-width: 480px) {
+  .menu-button { padding: 0.28rem 0.45rem; font-size: 0.92rem; }
+  .dropdown { min-width: 170px; right: 6px; }
+}
+
+/* garantir que dropdown não cause overflow em small screens */
 @media (max-width: 768px) {
-  .telegram-menu .dropdown { display: none !important; }
+  .telegram-menu .dropdown { right: 6px; left: auto; }
 }
 @media (max-width: 400px) {
   .title .logo { font-size: 0.95rem; }

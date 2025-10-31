@@ -22,14 +22,16 @@
       </div>
 
       <div class="hero-right">
-        <img
-          ref="mascotsImg"
-          src="/mascotes.png"
-          alt="Mascotes — touro e urso"
-          class="mascots"
-          loading="lazy"
-          aria-hidden="true"
-        />
+        <div class="hero-visual">
+          <img
+            ref="mascotsImg"
+            src="/mascotes.png"
+            alt="Mascotes — touro e urso"
+            class="mascots"
+            loading="lazy"
+            aria-hidden="true"
+          />
+        </div>
       </div>
     </section>
 
@@ -381,14 +383,22 @@ onBeforeUnmount(() => {
 }
 
 
-.hero-right .hero-visual {
-  background: linear-gradient(180deg, #0b0b0b, #121212);
-  border-radius: 12px;
-  padding: 0.5rem;
+.hero-right {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 320px; /* maior para comportar mascotes em desktop */
+}
+
+.hero-visual {
+  width: 100%;
+  max-width: 520px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #0b0b0b, #121212);
+  border-radius: 12px;
+  padding: 0.5rem;
   border: 1px solid rgba(212,175,55,0.06);
   box-shadow: 0 18px 44px rgba(0,0,0,0.7);
 }
@@ -465,6 +475,12 @@ onBeforeUnmount(() => {
 #robos .grid {
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
+}
+@media (max-width: 1100px) {
+  #robos .grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+}
+@media (max-width: 680px) {
+  #robos .grid { grid-template-columns: 1fr; gap: 1.2rem; }
 }
 
 /* === Novas regras: Indicadores = 4 colunas, Pacotes = 3 colunas === */
@@ -595,18 +611,19 @@ onBeforeUnmount(() => {
   color:#111;
 }
 
+/* container: usar max-width e padding responsivo */
 .container {
-  width: 80%;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
-.centered{
-  text-align: center;
-}
-
-.tg-title {
-  font-size: 28px;
-  margin-bottom: 0.6rem;
-  color: rgba(212,175,55);
+/* melhorar leitura em tablets / mobiles */
+@media (max-width: 420px) {
+  .hero-visual { height: 200px; max-width: 360px; }
+  .mascots { border-radius: 14px; border-width: 1px; }
+  .hero-left h1 { font-size: 1.4rem; }
+  .subtitle { margin-bottom: 1.4rem; font-size: 0.95rem; }
 }
 </style>

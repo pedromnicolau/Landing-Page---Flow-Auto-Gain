@@ -61,7 +61,8 @@ const year = new Date().getFullYear();
 
 /* container */
 .footer-inner {
-  width: 80%;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -164,15 +165,16 @@ copyright,
 
 /* responsiveness */
 @media (max-width: 900px) {
-  .footer-top { grid-template-columns: 1fr 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 1rem; }
   .contact { grid-column: span 2; }
   .brand .tagline { max-width: none; }
 }
 @media (max-width: 560px) {
-  .footer-top { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 0.9rem; }
   .contact { grid-column: auto; }
   .icons { gap:0.4rem; }
   .icon { width:34px; height:34px; }
   .risk-box { font-size: 0.9rem; padding: 0.9rem; }
+  .footer-inner { padding: 0 0.8rem; }
 }
 </style>

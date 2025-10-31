@@ -64,7 +64,12 @@ export default {
   animation: fadeInUp 260ms ease both;
 }
 .modal {
-  width:min(880px, 96%); background: linear-gradient(180deg, #0b0b0b, #0f0f10); border-radius:12px; border:1px solid rgba(212,175,55,0.08); padding:1rem; color:#f5f2eb;
+  width: min(720px, 96%);
+  background: linear-gradient(180deg, #0b0b0b, #0f0f10);
+  border-radius: 12px;
+  border: 1px solid rgba(212,175,55,0.08);
+  padding: 0.9rem;
+  color: #f5f2eb;
   box-shadow:0 20px 60px rgba(0,0,0,0.75);
   transform-origin:center; animation: fadeInUp 320ms cubic-bezier(.2,.9,.2,1);
 }
@@ -73,6 +78,15 @@ export default {
 .close { background:transparent; border:none; color:rgba(245,242,235,0.7); font-size:1.1rem; cursor:pointer; }
 .modal-body { margin-top:0.6rem; display:flex; flex-direction:column; gap:0.6rem; }
 .terms-scroll { max-height:220px; overflow:auto; padding:0.6rem; background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:10px; border:1px solid rgba(255,255,255,0.02); }
+
+@media (max-width: 640px) {
+  .modal { width: 94%; padding: 0.7rem; }
+  .terms-scroll { max-height: 160px; }
+  .modal-body { gap: 0.45rem; }
+  .modal-footer { gap: 0.45rem; }
+  .primary, .secondary { padding: 0.55rem 0.8rem; font-size: 0.95rem; }
+}
+
 .accept { display:flex; gap:0.7rem; align-items:center; margin-top:0.4rem; color:rgba(245,242,235,0.9); }
 .modal-footer { display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.8rem; }
 .primary {
