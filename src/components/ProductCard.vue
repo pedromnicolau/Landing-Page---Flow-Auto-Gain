@@ -121,7 +121,7 @@ export default {
 
 <style scoped>
 .product-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.005));
+  background: linear-gradient(225deg, rgba(255,255,255,0.015), rgba(255,255,255,0.005));
   border-radius: 12px;
   padding:1.6rem;
   color:#f5f2eb;
@@ -152,8 +152,8 @@ export default {
 .product-category {
   font-size: 0.9rem;
   color: rgba(245,242,235,0.65);
-  background: rgba(212,175,55,0.1);
-  padding: 0.3rem 0.6rem; /* levemente maior para equilibrar */
+  background: linear-gradient(-225deg, rgba(212,175,55,0.05), transparent);
+  padding: 0.3rem 0.5rem;
   border-radius: 8px;
   border: 1px solid rgba(212,175,55,0.1);
 }

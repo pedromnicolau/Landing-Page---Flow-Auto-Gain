@@ -22,16 +22,14 @@
       </div>
 
       <div class="hero-right">
-        <div class="hero-visual">
-          <img
-            ref="mascotsImg"
-            src="/mascotes.png"
-            alt="Mascotes — touro e urso"
-            class="mascots"
-            loading="lazy"
-            aria-hidden="true"
-          />
-        </div>
+        <img
+          ref="mascotsImg"
+          src="/mascotes.png"
+          alt="Mascotes — touro e urso"
+          class="mascots"
+          loading="lazy"
+          aria-hidden="true"
+        />
       </div>
     </section>
 
@@ -332,7 +330,8 @@ onBeforeUnmount(() => {
 .app-root {
   min-height: 100vh;
   padding-top: 76px; /* desloca o conteúdo abaixo da navbar fixa (navbar height 72px + pequena folga) */
-  background: linear-gradient(180deg, #070707 0%, #0f0f0f 100%);
+  /* changed: usar cor sólida escura para remover a linha horizontal de dois tons */
+  background: var(--bg);
   color: #f5f2eb;
   display: flex;
   flex-direction: column;
@@ -344,6 +343,7 @@ onBeforeUnmount(() => {
   gap: 6rem;
   align-items: center;
   padding: 2rem 0;
+  height: 70vh;
 }
 
 .hero-left {
@@ -389,20 +389,6 @@ onBeforeUnmount(() => {
   justify-content: center;
 }
 
-.hero-visual {
-  width: 100%;
-  max-width: 520px;
-  height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #0b0b0b, #121212);
-  border-radius: 12px;
-  padding: 0.5rem;
-  border: 1px solid rgba(212,175,55,0.06);
-  box-shadow: 0 18px 44px rgba(0,0,0,0.7);
-}
-
 /* imagem responsiva dentro do visual */
 .mascots {
   width: 100%;
@@ -421,10 +407,10 @@ onBeforeUnmount(() => {
 
 /* responsividade: reduzir visual em telas menores */
 @media (max-width: 900px) {
-  .hero-right .hero-visual { height: 260px; }
+  .hero-right .mascots { height: 260px; }
 }
 @media (max-width: 640px) {
-  .hero-right .hero-visual { height: 200px; }
+  .hero-right .mascots { height: 200px; }
 }
 
 .chart {
@@ -613,15 +599,13 @@ onBeforeUnmount(() => {
 
 /* container: usar max-width e padding responsivo */
 .container {
-  width: 100%;
+  width: 90vw;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
 }
 
 /* melhorar leitura em tablets / mobiles */
 @media (max-width: 420px) {
-  .hero-visual { height: 200px; max-width: 360px; }
   .mascots { border-radius: 14px; border-width: 1px; }
   .hero-left h1 { font-size: 1.4rem; }
   .subtitle { margin-bottom: 1.4rem; font-size: 0.95rem; }

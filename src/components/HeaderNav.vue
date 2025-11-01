@@ -330,22 +330,18 @@ export default {
   display:flex;
   align-items:center;
   justify-content:center;
-  background: linear-gradient(180deg, #090909 0%, var(--bg) 100%);
+  background: var(--bg);
   color: #f5f2eb;
   border-bottom: 1px solid rgba(212,175,55,0.5);
   box-shadow: 0 6px 24px rgba(0,0,0,0.6);
   z-index: 9999;
-  box-sizing: border-box;
 }
 
 .topbar-inner {
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 1.25rem;
+  width: 90vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-sizing: border-box;
 }
 
 .brand { 
