@@ -164,7 +164,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 import HeaderNav from "./components/HeaderNav.vue";
 import ProductCard from "./components/ProductCard.vue";
 import OfferModal from "./components/OfferModal.vue";
@@ -198,13 +198,58 @@ const alphaLine = computed(() =>
   robots.value.filter((p) => p.name.startsWith("Alpha"))
 );
 
-// simple hash-based route ("/", "/terms", "/privacy")
-const route = ref(window.location.hash.replace("#", "") || "/");
-function onHashChange() {
-  route.value = window.location.hash.replace("#", "") || "/";
+// hash handling:
+// - "#/..." => app route (ex: "/terms", "/privacy")
+// - "#anchor" (no leading "/") => anchor within main page (ex: "#robos")
+const route = ref('/');
+function _handleHashChange() {
+  const raw = String(window.location.hash || '').replace(/^#/, '');
+
+  // route case: hashes that start with "/" map to that route directly
+  if (raw && raw.startsWith('/')) {
+    route.value = raw;
+    // quando abrimos uma página de rota (terms/privacy), subir ao topo
+    // após a troca de conteúdo, garantindo que a view seja exibida
+    nextTick(() => {
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0,0); }
+    });
+    return;
+  }
+
+  // anchor / main page case: garantir que a app esteja em "/" e rolar para a âncora
+  route.value = '/';
+  // se houver uma âncora (ex: "robos"), rolar para ela após renderizar main
+  if (raw) {
+    nextTick(() => {
+      // permitir pequena espera para que o DOM esteja pronto
+      setTimeout(() => {
+        try {
+          const target = document.getElementById(raw);
+          const header = document.querySelector('.topbar');
+          const headerOffset = header ? header.offsetHeight : 72;
+          if (target) {
+            const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 8;
+            window.scrollTo({ top, behavior: 'smooth' });
+          } else {
+            // se não houver elemento com esse id, tentar rolar ao topo como fallback
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        } catch (e) {
+          // fallback silencioso
+        }
+      }, 50);
+    });
+  } else {
+    // sem âncora: rolar ao topo quando voltar para a main
+    nextTick(() => {
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0,0); }
+    });
+  }
 }
-onMounted(() => window.addEventListener("hashchange", onHashChange));
-onBeforeUnmount(() => window.removeEventListener("hashchange", onHashChange));
+onMounted(() => window.addEventListener("hashchange", _handleHashChange));
+onBeforeUnmount(() => window.removeEventListener("hashchange", _handleHashChange));
+// rodar uma vez na inicialização para respeitar hash atual
+_handleHashChange();
 
 function openOffer(payload) {
   // payload: { productId, name, planKey, plan, url }

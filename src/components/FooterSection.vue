@@ -15,11 +15,13 @@
         <div class="quick-links" aria-label="Links Rápidos">
           <h4>Links Rápidos</h4>
           <ul>
-            <li><a href="#/robots">Robôs</a></li>
-            <li><a href="#/indicators">Indicadores</a></li>
-            <li><a href="#/packages">Pacotes</a></li>
-            <li><a href="#/terms">Termos de Uso</a></li>
-            <li><a href="#/privacy">Política de Privacidade</a></li>
+            <!-- usar as âncoras internas que existem na página -->
+            <li><a href="#robos">Robôs</a></li>
+            <li><a href="#indicadores">Indicadores</a></li>
+            <li><a href="#pacotes">Pacotes</a></li>
+            <!-- Termos/Privacidade: forçar rota SPA com "#" + "/terms" ou "/privacy" -->
+            <li><a href="#/terms" @click.prevent="goTo('/terms')">Termos de Uso</a></li>
+            <li><a href="#/privacy" @click.prevent="goTo('/privacy')">Política de Privacidade</a></li>
           </ul>
         </div>
 
@@ -47,6 +49,17 @@
 
 <script setup>
 const year = new Date().getFullYear();
+
+// navegação segura para rotas de página (usar "#/terms" e "#/privacy")
+function goTo(path) {
+  try {
+    // garantir que a hash comece com "/" para ser tratada como rota pelo App.vue
+    const h = path.startsWith('/') ? '#' + path : '#/' + String(path).replace(/^#/, '');
+    window.location.hash = h;
+  } catch (e) {
+    // silent
+  }
+}
 </script>
 
 <style scoped>

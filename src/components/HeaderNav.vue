@@ -310,7 +310,8 @@
         window.scrollTo({ top, behavior: 'smooth' });
       } else {
         try {
-          history.replaceState(null, '', '#' + id);
+          // atualizar o hash (dispara hashchange) para que App.vue possa trocar a rota e rolar ao destino
+          window.location.hash = '#' + id;
         } catch (e) {}
       }
 
