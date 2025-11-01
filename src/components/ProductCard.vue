@@ -299,10 +299,11 @@ export default {
 
 /* em telas muito largas, exibir planos em linha para facilitar comparação */
 @media (min-width: 1000px) {
-  .plans { flex-direction: row; gap: 1rem; align-items: flex-start; }
+  /* changed: manter os planos empilhados mesmo em telas largas */
+  .plans { flex-direction: column; gap: 1rem; align-items: flex-start; }
   .plan-btn { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
   .plan-head { margin-bottom: 8px; }
-  .plan-price { margin-top: auto; text-align: right; }
+  .plan-price { margin-top: auto; text-align: left; } /* <- alinhamento à esquerda (alterada) */
 }
 
 /* manter boa aparência em tablets */
