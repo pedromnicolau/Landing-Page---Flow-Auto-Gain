@@ -364,7 +364,7 @@ onBeforeUnmount(() => {
 }
 
 .hero-cta a {
-  margin-right: 0.6rem;
+  margin-right: 1rem;
   text-decoration: none;
   padding: 0.6rem 1rem;
   border-radius: 8px;
@@ -374,12 +374,35 @@ onBeforeUnmount(() => {
   background: rgba(212,175,55);
   color: #ffffff;
   font-weight: 700;
+  /* added: allow transform/scale to work on the anchor */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 120ms ease;
+  will-change: transform, box-shadow;
+}
+.primary:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 34px rgba(212,175,55,0.12);
+  opacity: 0.98;
 }
 
 .ghost {
   background: transparent;
   color: #f5f2eb;
   border: 1px solid rgba(212,175,55);
+  /* changed: allow transform/scale like .primary */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.ghost:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 34px rgba(212,175,55,0.12);
+  color: rgba(212,175,55);
 }
 
 
@@ -505,7 +528,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   align-items: center;
   margin: 1.2rem 0;
-  padding: 0 1rem;
+  padding: 0 0 4rem 0;
   box-sizing: border-box;
 }
 
@@ -599,7 +622,7 @@ onBeforeUnmount(() => {
 
 /* container: usar max-width e padding responsivo */
 .container {
-  width: 90vw;
+  width: 80vw;
   max-width: 1200px;
   margin: 0 auto;
 }

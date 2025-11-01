@@ -24,9 +24,41 @@
 
       <!-- Desktop nav -->
       <nav class="navlinks" aria-hidden="false">
-        <a href="#pacotes" @click.prevent="navigate('#pacotes')">Pacotes</a>
-        <a href="#robos" @click.prevent="navigate('#robos')">Robôs</a>
-        <a href="#indicadores" @click.prevent="navigate('#indicadores')">Indicadores</a>
+        <!-- Pacotes (link + caret dropdown) -->
+        <div class="nav-item">
+          <a href="#pacotes" @click.prevent="navigate('#pacotes')">Pacotes</a>
+          <button class="caret" @click.stop="toggleCategory('pacotes')" :aria-expanded="categoryDropdowns.pacotes" aria-haspopup="true" aria-label="Abrir lista de pacotes">▾</button>
+
+          <ul v-if="categoryDropdowns.pacotes" class="cat-dropdown" role="menu" @click.stop>
+            <li v-for="p in pacotesList" :key="p.id">
+              <button type="button" @click="scrollToProduct(p.id)" role="menuitem">{{ p.name }}</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Robôs (link + caret dropdown) -->
+        <div class="nav-item">
+          <a href="#robos" @click.prevent="navigate('#robos')">Robôs</a>
+          <button class="caret" @click.stop="toggleCategory('robos')" :aria-expanded="categoryDropdowns.robos" aria-haspopup="true" aria-label="Abrir lista de robôs">▾</button>
+
+          <ul v-if="categoryDropdowns.robos" class="cat-dropdown" role="menu" @click.stop>
+            <li v-for="p in robosList" :key="p.id">
+              <button type="button" @click="scrollToProduct(p.id)" role="menuitem">{{ p.name }}</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Indicadores (link + caret dropdown) -->
+        <div class="nav-item">
+          <a href="#indicadores" @click.prevent="navigate('#indicadores')">Indicadores</a>
+          <button class="caret" @click.stop="toggleCategory('indicadores')" :aria-expanded="categoryDropdowns.indicadores" aria-haspopup="true" aria-label="Abrir lista de indicadores">▾</button>
+
+          <ul v-if="categoryDropdowns.indicadores" class="cat-dropdown" role="menu" @click.stop>
+            <li v-for="p in indicadoresList" :key="p.id">
+              <button type="button" @click="scrollToProduct(p.id)" role="menuitem">{{ p.name }}</button>
+            </li>
+          </ul>
+        </div>
 
         <!-- NEW: Telegram dropdown -->
         <div
@@ -36,7 +68,7 @@
           <button
             class="menu-button"
             @click="toggleTelegram"
-            :aria-expanded="telegramOpen.toString()"
+            :aria-expanded="telegramOpen"
             aria-haspopup="true"
             aria-controls="telegram-dropdown"
             aria-label="Abrir menu Telegram"
@@ -48,7 +80,7 @@
           <ul
             id="telegram-dropdown"
             class="dropdown"
-            v-show="telegramOpen"
+            v-if="telegramOpen"
             role="menu"
             @click.stop
           >
@@ -93,16 +125,39 @@
     <div
       id="mobile-menu"
       class="mobile-menu"
-      v-show="mobileOpen"
+      v-if="mobileOpen"
       role="menu"
       @click.self="toggleMobile"
     >
       <nav class="mobile-navlinks">
-        <a href="#robos" role="menuitem" @click.prevent="navigate('#robos')">Robôs</a>
-        <a href="#indicadores" role="menuitem" @click.prevent="navigate('#indicadores')">Indicadores</a>
-        <a href="#pacotes" role="menuitem" @click.prevent="navigate('#pacotes')">Pacotes</a>
+        <!-- Robôs: link + caret -->
+        <div class="mobile-nav-item">
+          <a href="#robos" role="menuitem" @click.prevent="navigate('#robos')">Robôs</a>
+          <button class="mobile-caret" @click.stop="toggleCategory('robos')" :aria-expanded="categoryDropdowns.robos" aria-label="Abrir lista de robôs">▾</button>
+        </div>
+        <div v-if="categoryDropdowns.robos" class="mobile-submenu">
+          <button v-for="p in robosList" :key="p.id" @click="scrollToProduct(p.id)">{{ p.name }}</button>
+        </div>
 
-        <!-- NEW: Telegram items for mobile -->
+        <!-- Indicadores: link + caret -->
+        <div class="mobile-nav-item">
+          <a href="#indicadores" role="menuitem" @click.prevent="navigate('#indicadores')">Indicadores</a>
+          <button class="mobile-caret" @click.stop="toggleCategory('indicadores')" :aria-expanded="categoryDropdowns.indicadores" aria-label="Abrir lista de indicadores">▾</button>
+        </div>
+        <div v-if="categoryDropdowns.indicadores" class="mobile-submenu">
+          <button v-for="p in indicadoresList" :key="p.id" @click="scrollToProduct(p.id)">{{ p.name }}</button>
+        </div>
+
+        <!-- Pacotes: link + caret -->
+        <div class="mobile-nav-item">
+          <a href="#pacotes" role="menuitem" @click.prevent="navigate('#pacotes')">Pacotes</a>
+          <button class="mobile-caret" @click.stop="toggleCategory('pacotes')" :aria-expanded="categoryDropdowns.pacotes" aria-label="Abrir lista de pacotes">▾</button>
+        </div>
+        <div v-if="categoryDropdowns.pacotes" class="mobile-submenu">
+          <button v-for="p in pacotesList" :key="p.id" @click="scrollToProduct(p.id)">{{ p.name }}</button>
+        </div>
+
+        <!-- NEW: Telegram items for mobile (kept as simple links) -->
         <a
           href="https://t.me/+1h9O__7JFzZjM2Fh"
           class="tg-mobile"
@@ -123,13 +178,20 @@
 </template>
 
 <script>
+import { PRODUCTS } from '../data/products.js';
+
 export default {
   name: 'HeaderNav',
   data() {
     return {
       mobileOpen: false,
       isBull: false,
-      telegramOpen: false
+      telegramOpen: false,
+      categoryDropdowns: {
+        pacotes: false,
+        robos: false,
+        indicadores: false
+      }
     };
   },
 
@@ -170,16 +232,26 @@ export default {
     target.addEventListener('pointerleave', this._onPointerEnd, { passive: true });
     target.addEventListener('touchend', this._onPointerEnd, { passive: true });
 
-    // handlers para fechar dropdown Telegram ao clicar fora / Esc
+    // storage for highlight timeouts
+    this._highlightTimeouts = {}; 
+
+    // handlers para fechar dropdown Telegram / categorias ao clicar fora / Esc
     this._onDocClick = (e) => {
       try {
         if (this.telegramOpen && !this.$el.contains(e.target)) this.closeTelegram();
+
+        const anyOpen = Object.values(this.categoryDropdowns).some(Boolean);
+        if (anyOpen && !this.$el.contains(e.target)) this.closeCategoryDropdowns();
       } catch (err) { /* silent */ }
     };
+
     this._onDocKeydown = (e) => {
-      if (!this.telegramOpen) return;
-      if (e.key === 'Escape' || e.key === 'Esc') this.closeTelegram();
+      if (this.telegramOpen && (e.key === 'Escape' || e.key === 'Esc')) this.closeTelegram();
+      // também fechar dropdowns de categoria com Esc
+      if (Object.values(this.categoryDropdowns).some(Boolean) && (e.key === 'Escape' || e.key === 'Esc')) this.closeCategoryDropdowns();
     };
+
+    // garantir registro único
     document.addEventListener('click', this._onDocClick, true);
     document.addEventListener('keydown', this._onDocKeydown, true);
   },
@@ -191,11 +263,21 @@ export default {
     this._removeSymbolListeners();
   },
 
+  computed: {
+    pacotesList() {
+      return PRODUCTS.filter(p => p.category === 'Pacote');
+    },
+    robosList() {
+      return PRODUCTS.filter(p => p.category === 'Robô');
+    },
+    indicadoresList() {
+      return PRODUCTS.filter(p => p.category === 'Indicador');
+    }
+  },
+
   methods: {
     toggleMobile() {
       this.mobileOpen = !this.mobileOpen;
-      // bloquear scroll do body quando o menu móvel estiver aberto
-      document.body.style.overflow = this.mobileOpen ? 'hidden' : '';
     },
 
     // updated: toggle between bear and bull and go to home
@@ -211,6 +293,60 @@ export default {
 
     closeTelegram() {
       this.telegramOpen = false;
+    },
+
+    toggleCategory(key) {
+      // close others
+      Object.keys(this.categoryDropdowns).forEach(k => {
+        if (k !== key) this.categoryDropdowns[k] = false;
+      });
+      this.categoryDropdowns[key] = !this.categoryDropdowns[key];
+
+      // close telegram if opening a category
+      if (this.categoryDropdowns[key]) this.telegramOpen = false;
+    },
+
+    closeCategoryDropdowns() {
+      this.categoryDropdowns = { pacotes: false, robos: false, indicadores: false };
+    },
+
+    scrollToProduct(productId) {
+      const id = 'product-' + productId;
+      const target = document.getElementById(id);
+      const header = document.querySelector('.topbar');
+      const headerOffset = header ? header.offsetHeight : 72;
+
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 8;
+        window.scrollTo({ top, behavior: 'smooth' });
+
+        // highlight pulse: add class and remove after ~3s
+        try {
+          // clear any existing timeout for this product
+          if (this._highlightTimeouts && this._highlightTimeouts[productId]) {
+            clearTimeout(this._highlightTimeouts[productId]);
+            delete this._highlightTimeouts[productId];
+          }
+
+          // ensure class toggled
+          target.classList.add('highlight');
+
+          // remove after 3s
+          this._highlightTimeouts[productId] = setTimeout(() => {
+            try { target.classList.remove('highlight'); } catch (e) { /* silent */ }
+            delete this._highlightTimeouts[productId];
+          }, 3000);
+        } catch (err) {
+          // silent fallback
+        }
+      } else {
+        // fallback: close dropdown and try to navigate to section
+        // nothing else
+      }
+
+      // close open dropdowns
+      this.closeCategoryDropdowns();
+      if (this.mobileOpen) this.toggleMobile();
     },
 
     navigate(hash) {
@@ -260,6 +396,12 @@ export default {
       // remover listeners do documento para dropdown Telegram
       if (this._onDocClick) document.removeEventListener('click', this._onDocClick, true);
       if (this._onDocKeydown) document.removeEventListener('keydown', this._onDocKeydown, true);
+
+      // clear any pending highlight timeouts
+      if (this._highlightTimeouts) {
+        Object.values(this._highlightTimeouts).forEach((t) => clearTimeout(t));
+        this._highlightTimeouts = {};
+      }
 
       this._stopSymbolRaf();
     },
@@ -338,7 +480,7 @@ export default {
 }
 
 .topbar-inner {
-  width: 90vw;
+  width: 80vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -451,6 +593,60 @@ export default {
   color: var(--gold-1);
 }
 
+/* nav item wrapper to position dropdown */
+.nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;           /* caret mais próximo do link */
+  margin-right: 18px; /* mais espaço entre menus */
+}
+
+/* caret button next to menu link */
+.caret {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 4px;    /* menos padding para ficar mais colado ao link */
+  font-size: 0.9rem;
+  line-height: 1;
+  border-radius: 6px;
+}
+.caret:hover { background: rgba(255,255,255,0.02); }
+
+/* category dropdown similar to telegram dropdown but aligned under the nav item */
+.cat-dropdown {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  min-width: 200px;
+  background: linear-gradient(180deg, #0b0b0b, #121212);
+  border: 1px solid rgba(212,175,55,0.06);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+  border-radius: 10px;
+  padding: 6px;
+  list-style: none;
+  margin: 0;
+  z-index: 10000;
+}
+.cat-dropdown li { margin: 0; }
+.cat-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  color: rgba(245,242,235,0.96);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.cat-dropdown button:hover {
+  background: rgba(212,175,55,0.04);
+  color: var(--gold-1);
+}
+
 /* Mobile menu */
 .hamburger {
   display: none;
@@ -466,7 +662,6 @@ export default {
 .hamburger:hover { background: rgba(255,255,255,0.03); }
 
 .mobile-menu {
-  display: none;
   position: fixed;
   top: 72px;
   left: 0;
@@ -489,6 +684,41 @@ export default {
   padding: 10px 12px;
   border-radius: 8px;
   text-decoration: none;
+}
+
+/* mobile submenu styles */
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+.mobile-caret {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1rem;
+  padding: 6px;
+  border-radius: 6px;
+}
+.mobile-caret:hover { background: rgba(255,255,255,0.02); }
+.mobile-submenu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 0 10px 12px;
+}
+.mobile-submenu button {
+  background: transparent;
+  border: none;
+  color: rgba(245,242,235,0.95);
+  text-align: left;
+  padding: 8px 4px;
+  border-radius: 6px;
+}
+.mobile-submenu button:hover {
+  background: rgba(212,175,55,0.04);
+  color: var(--gold-1);
 }
 
 /* reduzir padding e tornar layout adaptável */
@@ -514,3 +744,4 @@ export default {
   .title .subtitle { font-size: 0.75rem; }
 }
 </style>
+

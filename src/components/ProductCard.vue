@@ -1,5 +1,5 @@
 <template>
-  <article class="product-card">
+  <article :id="'product-' + product.id" class="product-card">
     <div class="card-head">
       <div class="product-title">{{ product.name }}</div>
       <div class="product-category">{{ product.category }}</div>
@@ -283,6 +283,30 @@ export default {
 
 /* garante que o svg use a cor corrente do .plan-icon */
 .plan-icon svg { display:block; width:100%; height:100%; color: inherit; }
+
+/* highlight pulse used when user selects from dropdown */
+.product-card.highlight {
+  animation: pulseHighlight 900ms ease-in-out 3;
+  /* leve destaque extra para visibilidade */
+  border-color: var(--gold-2);
+  z-index: 2;
+}
+
+/* pulsing keyframes (subtle lift + glow) */
+@keyframes pulseHighlight {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 8px 24px rgba(212,175,55,0.06);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(212,175,55,0.16);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 8px 24px rgba(212,175,55,0.06);
+  }
+}
 
 /* tornar o cartão mais compacto em pequenos dispositivos */
 @media (max-width: 640px) {
