@@ -4,21 +4,19 @@
       <!-- make brand clickable and keyboard accessible -->
       <div
         class="brand"
-        @click="toggleSymbol"
-        @keyup.enter="toggleSymbol"
+        @click="goHome"
+        @keyup.enter="goHome"
         role="button"
         tabindex="0"
         aria-label="Ir para a página inicial"
       >
         <div>
-          <!-- adicionada ref para controlar via JS -->
-          <img
-            ref="symbolImg"
-            :src="isBull ? '/bull.png' : '/bear.png'"
-            :alt="isBull ? 'Touro' : 'Urso'"
-            :title="isBull ? 'Touro' : 'Urso'"
-            :class="{ bull: isBull }"
-          >
+          <h2>Flow <span class="gold-text">Auto Gain</span></h2>
+          <!-- <img
+            src="/candles.png"
+            alt="Candles"
+            title="Candles"
+          > -->
         </div>
       </div>
 
@@ -178,62 +176,25 @@
 </template>
 
 <script>
-import { PRODUCTS } from '../data/products.js';
+  import { PRODUCTS } from '../data/products.js';
 
-export default {
-  name: 'HeaderNav',
-  data() {
-    return {
-      mobileOpen: false,
-      isBull: false,
-      telegramOpen: false,
-      categoryDropdowns: {
-        pacotes: false,
-        robos: false,
-        indicadores: false
-      }
-    };
+  export default {
+    name: 'HeaderNav',
+    data() {
+      return {
+        mobileOpen: false,
+        telegramOpen: false,
+        categoryDropdowns: {
+          pacotes: false,
+          robos: false,
+          indicadores: false
+        }
+      };
   },
-
-  // adiciona listeners ao montar e limpa ao desmontar (compatível com Vue2/3)
+  
   mounted() {
-    // armazenamento interno para evitar re-criação de closures
-    this._symbol = {
-      clientX: 0,
-      clientY: 0,
-      rafId: null,
-      maxTilt: 15, // graus máximos
-      running: false,
-    };
-
-    // handler com binding para permitir remoção
-    this._onPointerMove = (e) => {
-      // pointer event ou mouse event compatível
-      const cx = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
-      const cy = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
-      this._symbol.clientX = cx;
-      this._symbol.clientY = cy;
-      if (!this._symbol.running) this._startSymbolRaf();
-    };
-
-    // usar pointermove se disponível
-    const target = window;
-    target.addEventListener('pointermove', this._onPointerMove, { passive: true });
-    // fallback
-    target.addEventListener('mousemove', this._onPointerMove, { passive: true });
-
-    // stop on touchend to avoid stuck state
-    this._onPointerEnd = () => {
-      // reset suave para identidade
-      this._symbol.clientX = null;
-      this._symbol.clientY = null;
-      if (!this._symbol.running) this._startSymbolRaf();
-    };
-    target.addEventListener('pointerleave', this._onPointerEnd, { passive: true });
-    target.addEventListener('touchend', this._onPointerEnd, { passive: true });
-
     // storage for highlight timeouts
-    this._highlightTimeouts = {}; 
+    this._highlightTimeouts = {};
 
     // handlers para fechar dropdown Telegram / categorias ao clicar fora / Esc
     this._onDocClick = (e) => {
@@ -247,7 +208,6 @@ export default {
 
     this._onDocKeydown = (e) => {
       if (this.telegramOpen && (e.key === 'Escape' || e.key === 'Esc')) this.closeTelegram();
-      // também fechar dropdowns de categoria com Esc
       if (Object.values(this.categoryDropdowns).some(Boolean) && (e.key === 'Escape' || e.key === 'Esc')) this.closeCategoryDropdowns();
     };
 
@@ -257,10 +217,10 @@ export default {
   },
 
   beforeDestroy() { // Vue 2
-    this._removeSymbolListeners();
+    this._removeListeners();
   },
   beforeUnmount() { // Vue 3
-    this._removeSymbolListeners();
+    this._removeListeners();
   },
 
   computed: {
@@ -278,13 +238,6 @@ export default {
   methods: {
     toggleMobile() {
       this.mobileOpen = !this.mobileOpen;
-    },
-
-    // updated: toggle between bear and bull and go to home
-    toggleSymbol() {
-      this.isBull = !this.isBull;
-      // navigate to home (clears hash, scrolls to top and closes mobile menu)
-      this.goHome();
     },
 
     toggleTelegram() {
@@ -339,12 +292,9 @@ export default {
         } catch (err) {
           // silent fallback
         }
-      } else {
-        // fallback: close dropdown and try to navigate to section
-        // nothing else
       }
 
-      // close open dropdowns
+      // close open dropdowns and mobile menu
       this.closeCategoryDropdowns();
       if (this.mobileOpen) this.toggleMobile();
     },
@@ -379,20 +329,7 @@ export default {
       if (this.mobileOpen) this.toggleMobile();
     },
 
-    // ----------------------------
-    // Novos métodos para acompanhar o mouse
-    // ----------------------------
-    _removeSymbolListeners() {
-      const target = window;
-      if (this._onPointerMove) {
-        target.removeEventListener('pointermove', this._onPointerMove);
-        target.removeEventListener('mousemove', this._onPointerMove);
-      }
-      if (this._onPointerEnd) {
-        target.removeEventListener('pointerleave', this._onPointerEnd);
-        target.removeEventListener('touchend', this._onPointerEnd);
-      }
-
+    _removeListeners() {
       // remover listeners do documento para dropdown Telegram
       if (this._onDocClick) document.removeEventListener('click', this._onDocClick, true);
       if (this._onDocKeydown) document.removeEventListener('keydown', this._onDocKeydown, true);
@@ -402,61 +339,6 @@ export default {
         Object.values(this._highlightTimeouts).forEach((t) => clearTimeout(t));
         this._highlightTimeouts = {};
       }
-
-      this._stopSymbolRaf();
-    },
-
-    _startSymbolRaf() {
-      if (this._symbol.rafId) return;
-      this._symbol.running = true;
-      const loop = () => {
-        this._updateSymbolTransform();
-        this._symbol.rafId = requestAnimationFrame(loop);
-      };
-      this._symbol.rafId = requestAnimationFrame(loop);
-    },
-
-    _stopSymbolRaf() {
-      if (this._symbol.rafId) {
-        cancelAnimationFrame(this._symbol.rafId);
-        this._symbol.rafId = null;
-      }
-      this._symbol.running = false;
-    },
-
-    _updateSymbolTransform() {
-      const img = this.$refs.symbolImg;
-      if (!img) return;
-
-      const rect = img.getBoundingClientRect();
-
-      // se não há coords (pointer saiu), animar retorno suave
-      if (this._symbol.clientX == null || this._symbol.clientY == null) {
-        img.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
-        return;
-      }
-
-      const cx = this._symbol.clientX;
-      const cy = this._symbol.clientY;
-
-      // normaliza -1..1 com base no centro do elemento
-      const relX = ((cx - (rect.left + rect.width / 2)) / rect.width) * 2; // -1..1
-      const relY = ((cy - (rect.top + rect.height / 2)) / rect.height) * 2; // -1..1
-
-      const clamp = (v, a = -1, b = 1) => Math.max(a, Math.min(b, v));
-      const nx = clamp(relX);
-      const ny = clamp(relY);
-
-      const max = this._symbol.maxTilt;
-
-      // rotateX = movimento vertical (inverte y), rotateY = movimento horizontal (inverte x)
-      const rotateX = (-ny) * max;
-      const rotateY = nx * max * -1;
-
-      // pequena tradução Z para dar profundidade
-      const translateZ = 6;
-
-      img.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
     }
   }
 };
@@ -743,5 +625,14 @@ export default {
   .title .logo { font-size: 0.95rem; }
   .title .subtitle { font-size: 0.75rem; }
 }
-</style>
 
+.gold-text {
+  background: linear-gradient(225deg, var(--gold-1), var(--gold-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  /* keep slight separation if needed */
+  line-height: 1.05;
+}
+</style>

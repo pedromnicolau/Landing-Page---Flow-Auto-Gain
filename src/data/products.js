@@ -333,16 +333,56 @@ const INDICATORS = [
 });
 
 const PACKAGES = [
-  { name: 'Pacote Alpha', plan: package3Plan },
-  { name: 'Pacote Gamma', plan: package3Plan },
-  { name: 'Pacote Delta', plan: package3Plan },
-  { name: 'Pacote Sniper', plan: package3Plan },
-  { name: 'Pacote Smart', plan: package3Plan },
-  { name: 'Pacote Safe', plan: package3Plan },
-  { name: 'Pacote com 9 Robôs', plan: package9Plan },
-  { name: 'Pacote com 4 Indicadores Flow', plan: package4IndicatorsPlan },
+  { name: 'Pacote Alpha', plan: package3Plan, features: [
+      'Inclui Alpha Sniper, Alpha Smart e Alpha Safe',
+      'Cobertura para diferentes perfis de risco e frequência',
+      'Desconto em relação à compra individual dos robôs',
+      'Atualizações e suporte por 12 meses'
+    ] },
+  { name: 'Pacote Gamma', plan: package3Plan, features: [
+      'Inclui Gamma Sniper, Gamma Smart e Gamma Safe',
+      'Foco em estratégias de entrada e gerenciamento de posição',
+      'Ideal para quem busca variedade de estilos dentro da mesma família',
+      'Suporte e atualizações centralizadas'
+    ] },
+  { name: 'Pacote Delta', plan: package3Plan, features: [
+      'Inclui Delta Sniper, Delta Smart e Delta Safe',
+      'Alta adaptabilidade a diferentes cenários intradiários',
+      'Perfeito para quem quer balancear agressividade e segurança',
+      'Pacote otimizado para consistência de operações'
+    ] },
+  { name: 'Pacote Sniper', plan: package3Plan, features: [
+      'Conjunto de robôs com foco em entradas de alta precisão',
+      'Maior número de operações bem filtradas por sessão',
+      'Indicados para quem busca velocidade com critérios claros de risco'
+    ] },
+  { name: 'Pacote Smart', plan: package3Plan, features: [
+      'Robôs com lógica balanceada entre frequência e qualidade de entradas',
+      'Menor exposição por operação e foco em setups confirmados',
+      'Boa opção para contas que desejam consistência sem overtrading'
+    ] },
+  { name: 'Pacote Safe', plan: package3Plan, features: [
+      'Pacote voltado à seletividade e preservação de capital',
+      'Operações mais escassas, porém de maior probabilidade',
+      'Indicados para perfis conservadores e para proteção em mercados voláteis'
+    ] },
+  { name: 'Pacote com 9 Robôs', plan: package9Plan, features: [
+      'Inclui 9 robôs cobrindo múltiplas linhas e estratégias',
+      'Maior diversificação operando em diferentes ativos e estilos',
+      'Redução de risco por diversificação e sinergia entre robôs'
+    ] },
+  { name: 'Pacote com 4 Indicadores Flow', plan: package4IndicatorsPlan, features: [
+      'Contém 4 indicadores Flow para suporte a entradas e gestão',
+      'Fornece zonas, fluxo e confirmação de tendências',
+      'Complementa qualquer robô com sinais adicionais de decisão'
+    ] },
   // novo pacote que contém Vector e Ômega
-  { name: 'Pacote de Alta Frequência', plan: package3Plan, contents: ['Vector', 'Ômega'] },
+  { name: 'Pacote de Alta Frequência', plan: package3Plan, contents: ['Vector', 'Ômega'], features: [
+      'Inclui Vector e Ômega — robôs de alta frequência',
+      'Foco em micro-movimentos e execução de baixa latência',
+      'Recomendado para operadores que dispõem de infraestrutura robusta',
+      'Maior potencial de operações diárias; exige monitoramento ativo'
+    ] },
 ].map((p) => {
   const id = slugify(p.name);
   const productId = id;
@@ -370,6 +410,8 @@ const PACKAGES = [
     plans,
     // quando fornecido, converte lista de nomes para slugs (conteúdo do pacote)
     ...(p.contents ? { contents: p.contents.map(c => slugify(c)) } : {}),
+    // propaga features (se fornecidas) para o produto final
+    ...(p.features ? { features: p.features } : {}),
   };
 });
 

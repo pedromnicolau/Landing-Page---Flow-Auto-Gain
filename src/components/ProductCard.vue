@@ -95,6 +95,22 @@ export default {
         { title: "Alpha Sniper", description: "Máxima agressividade e frequência.", features: ["Opera ativamente durante todo o pregão","Capitaliza micro-movimentos","Volume alto de operações","Potencial de altos retornos","Requer acompanhamento ativo"] },
         { title: "Alpha Smart", description: "Inteligência em cada trade.", features: ["Análise aprofundada antes de entrar","Espera confirmações de tendência","Operações bem fundamentadas","Evita armadilhas do mercado","Consistência a longo prazo"] },
         { title: "Alpha Safe", description: "Segurança como prioridade.", features: ["Extremamente seletivo","Opera apenas nos melhores setups","Máxima proteção de capital","Menor frequência operacional","Ideal para perfil conservador"] },
+
+        // adicionados: robôs de alta frequência com descrições apropriadas
+        { title: "Vector", description: "Alta frequência com foco em execução e filtragem ultrarrápida.", features: [
+          "Execução ultrarrápida otimizada para micro-movimentos",
+          "Baixa latência e gestão fina de ordens",
+          "Projetado para operar em ambientes de alta volatilidade intradiária",
+          "Requer conexão estável e monitoramento periódico",
+          "Indicada para traders que buscam alta frequência com controle de risco"
+        ] },
+        { title: "Ômega", description: "Linha de altíssima performance com estratégias de micro-latência.", features: [
+          "Estratégias de scalp e micro-tendência com alta sensibilidade de entrada",
+          "Múltiplas ordens de curta duração para captura de pequenos movimentos",
+          "Foco em execução precisa e rápida adaptação ao book",
+          "Necessita capital e infraestrutura adequados para performance consistente",
+          "Indicada para operadores experientes que acompanham operações"
+        ] },
       ];
 
       const indicators = [

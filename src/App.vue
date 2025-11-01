@@ -8,7 +8,7 @@
       <section class="hero">
       <div class="hero-left">
         <h1 class="hero-title">
-          Robôs e Indicadores <span class="gold-text">Profissionais</span> para a B3
+          <span class="gold-text">Robôs</span> e <span class="gold-text">Indicadores</span> Profissionais para a B3
         </h1>
         <p class="subtitle">
           Soluções automáticas e indicadores para operadores que buscam
@@ -348,14 +348,122 @@ onBeforeUnmount(() => {
 
 .hero-left {
   text-align: left;
+  position: relative; /* added so ::before can be positioned relative to this block */
+}
+
+/* ensure hero text and CTAs sit above the decorative circle */
+.hero-left > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* golden blurred circle behind hero text */
+.hero-left::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  /* radial golden gradient, translucent toward the edges */
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(212,175,55,0.95) 0%,
+    rgba(212,175,55,0.72) 20%,
+    rgba(212,175,55,0.30) 42%,
+    rgba(212,175,55,0.08) 65%,
+    rgba(0,0,0,0) 80%
+  );
+  filter: blur(150px);
+  opacity: 0.25;
+  z-index: 0;
+  pointer-events: none;
+  /* mix-blend-mode dá um brilho mais elegante sobre o fundo escuro */
+  mix-blend-mode: screen;
+}
+
+/* moving golden blurred circle behind hero-right image */
+.hero-right::before {
+  content: "";
+  position: absolute;
+  /* start near center-right of the image area */
+  left: 62%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(212,175,55,0.95) 0%,
+    rgba(212,175,55,0.72) 18%,
+    rgba(212,175,55,0.30) 40%,
+    rgba(212,175,55,0.08) 62%,
+    rgba(0,0,0,0) 80%
+  );
+  filter: blur(120px);
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  /* animate position to create subtle circular motion */
+  animation: floatCircle 10s linear infinite;
+}
+
+/* keyframes approximate a circular orbit by changing top/left */
+@keyframes floatCircle {
+  0%   { left: 62%; top: 42%; }
+  12.5%{ left: 70%; top: 50%; }
+  25%  { left: 62%; top: 58%; }
+  37.5%{ left: 54%; top: 50%; }
+  50%  { left: 62%; top: 42%; }
+  62.5%{ left: 70%; top: 50%; }
+  75%  { left: 62%; top: 58%; }
+  87.5%{ left: 54%; top: 50%; }
+  100% { left: 62%; top: 42%; }
+}
+
+/* responsive: reduce size and blur on smaller viewports */
+@media (max-width: 900px) {
+  .hero-right::before {
+    width: 420px;
+    height: 420px;
+    filter: blur(60px);
+    left: 60%;
+    top: 38%;
+    animation-duration: 12s;
+  }
+}
+@media (max-width: 640px) {
+  .hero-right::before {
+    width: 320px;
+    height: 320px;
+    filter: blur(42px);
+    left: 54%;
+    top: 44%;
+    animation-duration: 14s;
+  }
 }
 
 .hero-left h1 {
   font-size: 2.5rem;
   margin: 0 0 1rem 0;
-  color: #f8ecd8;
+  color: #f8ecd8; /* título principal branco/dourado apenas nos spans */
+  text-shadow: 0 6px 22px rgba(0,0,0,0.45);
   letter-spacing: -0.6px;
-  text-shadow: 0 6px 22px rgba(0,0,0,0.6);
+}
+
+/* gradient only for selected words */
+.gold-text {
+  background: linear-gradient(225deg, var(--gold-1), var(--gold-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  /* keep slight separation if needed */
+  line-height: 1.05;
 }
 
 .subtitle {
@@ -410,6 +518,13 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative; /* added: allow absolute pseudo-element behind the image */
+}
+
+/* ensure image sits above the animated blur */
+.hero-right > .mascots {
+  position: relative;
+  z-index: 1;
 }
 
 /* imagem responsiva dentro do visual */
@@ -494,15 +609,14 @@ onBeforeUnmount(() => {
 
 /* === Novas regras: Indicadores = 4 colunas, Pacotes = 3 colunas === */
 
-/* Indicadores: 4 colunas em desktop, reduz para 3/2/1 em larguras menores */
+/* Indicadores: 3 colunas em desktop, reduz para 2/1 em larguras menores */
 #indicadores .grid {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 @media (max-width: 1200px) {
-  #indicadores .grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 900px) {
   #indicadores .grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
@@ -625,6 +739,7 @@ onBeforeUnmount(() => {
   width: 80vw;
   max-width: 1200px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* melhorar leitura em tablets / mobiles */
