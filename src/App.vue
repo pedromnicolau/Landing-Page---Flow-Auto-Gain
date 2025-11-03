@@ -95,7 +95,8 @@
       <section id="robos" class="products-section">
         <h2>Robôs</h2>
 
-        <h3 class="line-title">Linha Gamma</h3>
+        <!-- Linha Gamma -->
+        <h3 id="linha-gamma" class="line-title">Linha Gamma</h3>
         <div class="grid">
           <ProductCard
             v-for="p in gammaLine"
@@ -105,7 +106,8 @@
           />
         </div>
 
-        <h3 class="line-title">Linha Delta</h3>
+        <!-- Linha Delta -->
+        <h3 id="linha-delta" class="line-title">Linha Delta</h3>
         <div class="grid">
           <ProductCard
             v-for="p in deltaLine"
@@ -116,7 +118,7 @@
         </div>
 
         <!-- Linha de Alta frequência (aparece abaixo da Delta) -->
-        <h3 class="line-title">Linha de Alta frequência</h3>
+        <h3 id="linha-alta-frequencia" class="line-title">Linha de Alta frequência</h3>
         <div class="grid">
           <ProductCard
             v-for="p in altaFreqLine"
@@ -126,7 +128,8 @@
           />
         </div>
 
-        <h3 class="line-title">Linha Alpha</h3>
+        <!-- Linha Alpha -->
+        <h3 id="linha-alpha" class="line-title">Linha Alpha</h3>
         <div class="grid">
           <ProductCard
             v-for="p in alphaLine"

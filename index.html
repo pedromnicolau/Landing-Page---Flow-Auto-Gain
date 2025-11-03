@@ -5,6 +5,19 @@
     <link rel="icon" type="image/svg+xml" href="/bear.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flow Auto Gain</title>
+
+    <!-- small global reset to avoid horizontal overflow on mobile -->
+    <style>
+      /* evita scroll horizontal */
+      html, body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* box-sizing global para evitar cálculos de largura inesperados */
+      *, *::before, *::after { box-sizing: border-box; }
+    </style>
   </head>
   <body>
     <div id="app"></div>
