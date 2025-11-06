@@ -1,19 +1,8 @@
 <template>
   <header class="topbar">
     <div class="topbar-inner">
-      <!-- make brand clickable and keyboard accessible -->
-      <div
-        class="brand"
-        @click="goHome"
-        @keyup.enter="goHome"
-        role="button"
-        tabindex="0"
-        aria-label="Ir para a página inicial"
-      >
-        <div>
-          <h2>Flow <span class="gold-text">Auto Gain</span></h2>
-        </div>
-      </div>
+      <a href="#hero" @click.prevent="navigate('#hero')"><h2>Flow <span class="gold-text">Auto Gain</span></h2></a>
+
 
       <!-- Desktop nav -->
       <nav class="navlinks" aria-hidden="false">
@@ -439,6 +428,11 @@ export default {
     }
   },
   methods: {
+    // helper: estamos em uma rota? (hash começa com "#/")
+    _isRoutePage() {
+      try { return String(window.location.hash || '').startsWith('#/'); } catch (e) { return false; }
+    },
+
     toggleMobile() {
       this.mobileOpen = !this.mobileOpen;
     },
@@ -475,60 +469,103 @@ export default {
       this.categoryDropdowns = { pacotes: false, robos: false, indicadores: false };
       this.closeRoboLineDropdowns();
     },
-    // scrollToProduct: atualiza a hash de forma direta (jump instantâneo)
+    // scrollToProduct: agora faz "dois passos" quando vier de rota
     scrollToProduct(productId) {
       const id = 'product-' + productId;
+      const onRoute = this._isRoutePage();
+      const target = typeof document !== 'undefined' ? document.getElementById(id) : null;
 
-      try {
-        // atualização direta da hash — provoca salto instantâneo do browser
-        window.location.hash = '#' + id;
-        // notificar App imediatamente (CustomEvent + Vue emit)
+      if (target) {
+        // já na main: rolar suave
+        try { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
         try { window.dispatchEvent(new CustomEvent('nav:anchor', { detail: { id } })); } catch (e) {}
         if (this.$emit) this.$emit('nav-anchor', id);
-      } catch (e) {}
+      } else if (onRoute) {
+        // vindo de página de rota: 1) voltar pra main, 2) ir para âncora
+        try {
+          window.location.hash = '';
+          try { window.dispatchEvent(new Event('nav:home')); } catch (e) {}
+          if (this.$emit) this.$emit('nav-home');
+        } catch (e) {}
+        setTimeout(() => {
+          try {
+            window.location.hash = '#' + id;
+            try { window.dispatchEvent(new CustomEvent('nav:anchor', { detail: { id } })); } catch (e) {}
+            if (this.$emit) this.$emit('nav-anchor', id);
+          } catch (e) {}
+        }, 0);
+      } else {
+        // main já ativa, elemento ainda não no DOM (raro): atualizar hash
+        try {
+          window.location.hash = '#' + id;
+          try { window.dispatchEvent(new CustomEvent('nav:anchor', { detail: { id } })); } catch (e) {}
+          if (this.$emit) this.$emit('nav-anchor', id);
+        } catch (e) {}
+      }
 
-      // fecha menus
+      // fecha menus e painel mobile
       this.closeCategoryDropdowns();
       if (this.mobileOpen) this.toggleMobile();
 
-      // opcional: tentar dar destaque imediato se o elemento já existir
+      // destaque oportunista se já existir
       try {
-        const target = document.getElementById(id);
-        if (target) {
+        const el = document.getElementById(id);
+        if (el) {
           if (!this._highlightTimeouts) this._highlightTimeouts = {};
           const key = id;
           if (this._highlightTimeouts[key]) clearTimeout(this._highlightTimeouts[key]);
-          target.classList.add('highlight');
-          this._highlightTimeouts[key] = setTimeout(() => target.classList.remove('highlight'), 3000);
+          el.classList.add('highlight');
+          this._highlightTimeouts[key] = setTimeout(() => el.classList.remove('highlight'), 3000);
         }
-      } catch (err) { /* silent */ }
+      } catch (err) {}
     },
 
-    // navigate: escreve a hash diretamente (jump instantâneo)
+    // navigate: dois passos quando viemos de rota (ex: #/terms -> #hero)
     navigate(hash) {
       const id = String(hash).replace(/^#/, '');
-
       if (this.mobileOpen) this.toggleMobile();
 
-      try {
-        const target = document.getElementById(id);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-          window.location.hash = '#' + id;
-        }
+      const onRoute = this._isRoutePage();
+      const target = typeof document !== 'undefined' ? document.getElementById(id) : null;
 
+      if (target) {
+        try { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+        try { window.dispatchEvent(new CustomEvent('nav:anchor', { detail: { id } })); } catch (e) {}
+        if (this.$emit) this.$emit('nav-anchor', id);
+        return;
+      }
 
-        // se for rota (começa com '/'), notificar como nav-home para o App rolar ao topo
-        if (id && id.startsWith('/')) {
+      if (onRoute && id && !id.startsWith('/')) {
+        // 1) limpar hash para voltar à main; 2) aplicar âncora
+        try {
+          window.location.hash = '';
           try { window.dispatchEvent(new Event('nav:home')); } catch (e) {}
           if (this.$emit) this.$emit('nav-home');
-        } else {
-          // otherwise notify anchor navigation
-          try { window.dispatchEvent(new CustomEvent('nav:anchor', { detail: { id } })); } catch (e) {}
-          if (this.$emit) this.$emit('nav-anchor', id);
-        }
-      } catch (e) {}
+        } catch (e) {}
+        setTimeout(() => {
+          try {
+            window.location.hash = '#' + id;
+            try { window.dispatchEvent(new CustomEvent('nav:anchor', { detail: { id } })); } catch (e) {}
+            if (this.$emit) this.$emit('nav-anchor', id);
+          } catch (e) {}
+        }, 0);
+      } else {
+        // fallback padrão
+        try {
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            window.location.hash = '#' + id;
+          }
+          if (id && id.startsWith('/')) {
+            try { window.dispatchEvent(new Event('nav:home')); } catch (e) {}
+            if (this.$emit) this.$emit('nav-home');
+          } else {
+            try { window.dispatchEvent(new CustomEvent('nav:anchor', { detail: { id } })); } catch (e) {}
+            if (this.$emit) this.$emit('nav-anchor', id);
+          }
+        } catch (e) {}
+      }
     },
 
     beforeUnmount() {
@@ -611,6 +648,11 @@ export default {
 /* optional: slightly reduce on very small screens */
 @media (max-width: 420px) {
   .brand img { width: 42px; height: 42px; }
+}
+
+a {
+  text-decoration: none;
+  color: white;
 }
 
 .navlinks a { 
@@ -951,4 +993,6 @@ export default {
   /* keep slight separation if needed */
   line-height: 1.05;
 }
+
+.brand-title { cursor: pointer; user-select: none; }
 </style>

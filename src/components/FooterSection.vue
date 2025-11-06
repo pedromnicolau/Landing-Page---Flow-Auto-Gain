@@ -19,9 +19,13 @@
             <li><a href="#robos">Robôs</a></li>
             <li><a href="#indicadores">Indicadores</a></li>
             <li><a href="#pacotes">Pacotes</a></li>
-            <!-- Termos/Privacidade: forçar rota SPA com "#" + "/terms" ou "/privacy" -->
-            <li><a href="#/terms" @click.prevent="goTo('/terms')">Termos de Uso</a></li>
-            <li><a href="#/privacy" @click.prevent="goTo('/privacy')">Política de Privacidade</a></li>
+            <!-- Termos/Privacidade com âncora da seção topo da página -->
+            <li>
+              <a href="#/terms?anchor=terms-top" @click.prevent="goTo('/terms?anchor=terms-top')">Termos de Uso</a>
+            </li>
+            <li>
+              <a href="#/privacy?anchor=privacy-top" @click.prevent="goTo('/privacy?anchor=privacy-top')">Política de Privacidade</a>
+            </li>
           </ul>
         </div>
 
@@ -50,10 +54,9 @@
 <script setup>
 const year = new Date().getFullYear();
 
-// navegação segura para rotas de página (usar "#/terms" e "#/privacy")
+// navegação para rotas de página com suporte a query (ex: '/terms?anchor=terms-top')
 function goTo(path) {
   try {
-    // garantir que a hash comece com "/" para ser tratada como rota pelo App.vue
     const h = path.startsWith('/') ? '#' + path : '#/' + String(path).replace(/^#/, '');
     window.location.hash = h;
   } catch (e) {

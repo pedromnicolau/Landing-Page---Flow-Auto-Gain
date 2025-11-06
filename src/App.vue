@@ -5,21 +5,21 @@
 
     <!-- route switch: main app vs pages -->
     <main v-if="route === '/' || route === ''" class="container">
-      <section class="hero">
-      <div class="hero-left">
-        <h1 class="hero-title">
-          <span class="gold-text">Robôs</span> e <span class="gold-text">Indicadores</span> Profissionais para a B3
-        </h1>
-        <p class="subtitle">
-          Soluções automáticas e indicadores para operadores que buscam
-          consistência e um sistema profissional. Pacotes e planos mensais,
-          trimestrais e anuais.
-        </p>
-        <div class="hero-cta">
-          <a href="#robos" class="primary">Ver Robôs</a>
-          <a href="#pacotes" class="ghost">Pacotes e Indicadores</a>
+      <section class="hero" id="hero">
+        <div class="hero-left">
+          <h1 class="hero-title">
+            <span class="gold-text">Robôs</span> e <span class="gold-text">Indicadores</span> Profissionais para a B3
+          </h1>
+          <p class="subtitle">
+            Soluções automáticas e indicadores para operadores que buscam
+            consistência e um sistema profissional. Pacotes e planos mensais,
+            trimestrais e anuais.
+          </p>
+          <div class="hero-cta">
+            <a href="#robos" class="primary">Ver Robôs</a>
+            <a href="#pacotes" class="ghost">Pacotes e Indicadores</a>
+          </div>
         </div>
-      </div>
 
       <div class="hero-right">
         <img
@@ -33,55 +33,70 @@
       </div>
     </section>
 
-
-      <div class="telegram-cta" role="navigation" aria-label="Links para Telegram">
-        <div class="centered">
-          <h2 class="tg-title">Grupo Automações</h2>
-          <p>Entre para o nosso grupo do Telegram para receber TODOS OS ROBÔS E INDICADORES GRATUITAMENTE para teste, e também um CUPOM DE 20% DE DESCONTO na pré-venda:</p>
-          <a
-            class="tg-btn tg-group"
-            href="https://t.me/+1h9O__7JFzZjM2Fh"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Entrar no Grupo Automações no Telegram"
-          >
-            <span class="tg-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 2L11 13"></path>
-                <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
-              </svg>
-            </span>
-            <span class="tg-label">
-              Grupo Automações
-            </span>
-          </a>
-        </div>
-
-        <div class="centered">
-          <h2 class="tg-title">Copy Trade</h2>
-          <p>Copie automaticamente em tempo real as operações dos nossos traders profissionais. Transparência, praticidade e resultado — tudo integrado ao seu Profit 👇</p>
-          <a
-            class="tg-btn tg-copy"
-            href="https://t.me/cleitinhotrader?text=Quero%20saber%20mais%20sobre%20o%20copy%20trade."
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Saber mais sobre Copy Trade no Telegram"
-          >
-            <span class="tg-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 2L11 13"></path>
-                <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
-              </svg>
-            </span>
-            <span class="tg-label">
-              Copy Trade — Saiba mais
-            </span>
-          </a>
+    <section class="carousel-section">
+      <div class="carousel-track">
+        <div 
+          v-for="(img, index) in [...carouselImages, ...carouselImages]" 
+          :key="index" 
+          class="carousel-item"
+          @click="openLightbox(index % carouselImages.length)"
+        >
+          <img :src="img" :alt="`Imagem ${index + 1}`" loading="lazy" />
         </div>
       </div>
+    </section>
+
+    <div class="telegram-cta" role="navigation" aria-label="Links para Telegram">
+      <div class="centered">
+        <h2 class="tg-title">Grupo Automações</h2>
+        <p>Entre para o nosso grupo do Telegram para receber TODOS OS ROBÔS E INDICADORES GRATUITAMENTE para teste, e também um CUPOM DE 20% DE DESCONTO na pré-venda:</p>
+        <a
+          class="tg-btn tg-group"
+          href="https://t.me/+1h9O__7JFzZjM2Fh"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Entrar no Grupo Automações no Telegram"
+        >
+          <span class="tg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
+            </svg>
+          </span>
+          <span class="tg-label">
+            Grupo Automações
+          </span>
+        </a>
+      </div>
+
+      <div class="centered">
+        <h2 class="tg-title">Copy Trade</h2>
+        <p>Copie automaticamente em tempo real as operações dos nossos traders profissionais. Transparência, praticidade e resultado — tudo integrado ao seu Profit 👇</p>
+        <a
+          class="tg-btn tg-copy"
+          href="https://t.me/cleitinhotrader?text=Quero%20saber%20mais%20sobre%20o%20copy%20trade."
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Saber mais sobre Copy Trade no Telegram"
+        >
+          <span class="tg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22l-4-9-9-4 20-7z"></path>
+            </svg>
+          </span>
+          <span class="tg-label">
+            Copy Trade — Saiba mais
+          </span>
+        </a>
+      </div>
+    </div>
 
       <section id="pacotes" class="products-section">
         <h2>Pacotes</h2>
+        <p class="section-lead">
+          Pacotes premium que unem robôs e indicadores em curadorias pensadas para maximizar custo‑benefício, simplicidade de setup e performance — com 25% OFF em relação à compra individual dos produtos.
+        </p>
         <div class="grid">
           <ProductCard
             v-for="p in packages"
@@ -94,6 +109,9 @@
 
       <section id="robos" class="products-section">
         <h2>Robôs</h2>
+        <p class="section-lead">
+          Os robôs Flow Auto Gain combinam leitura de mercado, gestão de risco institucional e execução de alta performance. A Linha Alpha opera em dólar (WDO/DOL), enquanto as linhas Gamma, Delta e Alta Frequência operam em índice (WIN/IND). Explore as linhas para estratégias sob medida e evolução contínua.
+        </p>
 
         <!-- Linha Gamma -->
         <h3 id="linha-gamma" class="line-title">Linha Gamma</h3>
@@ -142,6 +160,9 @@
 
       <section id="indicadores" class="products-section">
         <h2>Indicadores</h2>
+        <p class="section-lead">
+          Indicadores profissionais para análise gráfica — tendência, momentum, timing e confluências — prontos para o seu Profit. Sinais claros, documentados e construídos para elevar sua tomada de decisão.
+        </p>
         <div class="grid">
           <ProductCard
             v-for="p in indicators"
@@ -163,6 +184,15 @@
       :offer="selectedOffer"
       @close="closeModal"
     />
+
+    <!-- Lightbox -->
+    <div v-if="lightboxVisible" class="lightbox" @click.self="closeLightbox">
+      <button class="lightbox-close" @click="closeLightbox" aria-label="Fechar">×</button>
+      <button class="lightbox-nav lightbox-prev" @click="prevImage" aria-label="Anterior">‹</button>
+      <button class="lightbox-nav lightbox-next" @click="nextImage" aria-label="Próxima">›</button>
+      <img :src="carouselImages[currentLightboxIndex]" :alt="`Imagem ${currentLightboxIndex + 1}`" class="lightbox-image" />
+      <div class="lightbox-counter">{{ currentLightboxIndex + 1 }} / {{ carouselImages.length }}</div>
+    </div>
   </div>
 </template>
 
@@ -171,7 +201,6 @@ import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 import HeaderNav from "./components/HeaderNav.vue";
 import ProductCard from "./components/ProductCard.vue";
 import OfferModal from "./components/OfferModal.vue";
-// FooterSection will be provided/updated below
 import FooterSection from "./components/FooterSection.vue";
 import TermsPage from "./pages/Terms.vue";
 import PrivacyPage from "./pages/Privacy.vue";
@@ -180,26 +209,24 @@ import { PRODUCTS, offerUrl } from "./data/products.js";
 const modalVisible = ref(false);
 const selectedOffer = ref(null);
 
+// Array de imagens do carrossel
+const carouselImages = ref([
+  '/carousel-1.png',
+  '/carousel-2.png',
+  '/carousel-3.png',
+  '/carousel-4.png',
+  '/carousel-5.png',
+  '/carousel-6.png'
+]);
+
 const robots = computed(() => PRODUCTS.filter((p) => p.category === "Robô"));
 const indicators = computed(() => PRODUCTS.filter((p) => p.category === "Indicador"));
 const packages = computed(() => PRODUCTS.filter((p) => p.category === "Pacote"));
 
-const gammaLine = computed(() =>
-  robots.value.filter((p) => p.name.startsWith("Gamma"))
-);
-
-const deltaLine = computed(() =>
-  robots.value.filter((p) => p.name.startsWith("Delta"))
-);
-
-// Linha de Alta frequência
-const altaFreqLine = computed(() =>
-  robots.value.filter((p) => p.line === 'Linha de alta frequência')
-);
-
-const alphaLine = computed(() =>
-  robots.value.filter((p) => p.name.startsWith("Alpha"))
-);
+const gammaLine = computed(() => robots.value.filter((p) => p.name.startsWith("Gamma")));
+const deltaLine = computed(() => robots.value.filter((p) => p.name.startsWith("Delta")));
+const altaFreqLine = computed(() => robots.value.filter((p) => p.line === 'Linha de alta frequência'));
+const alphaLine = computed(() => robots.value.filter((p) => p.name.startsWith("Alpha")));
 
 // hash handling:
 // - "#/..." => app route (ex: "/terms", "/privacy")
@@ -223,27 +250,9 @@ function _handleHashChange() {
   route.value = '/';
   // se houver uma âncora (ex: "robos"), rolar para ela após renderizar main
   if (raw) {
-    nextTick(() => {
-      // permitir pequena espera para que o DOM esteja pronto
-      setTimeout(() => {
-        try {
-          const target = document.getElementById(raw);
-          const header = document.querySelector('.topbar');
-          const headerOffset = header ? header.offsetHeight : 72;
-          if (target) {
-            const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 8;
-            window.scrollTo({ top, behavior: 'smooth' });
-          } else {
-            // se não houver elemento com esse id, tentar rolar ao topo como fallback
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        } catch (e) {
-          // fallback silencioso
-        }
-      }, 50);
-    });
+    // usar rolagem resiliente para âncoras
+    _scrollToAnchor(raw);
   } else {
-    // sem âncora: rolar ao topo quando voltar para a main
     nextTick(() => {
       try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0,0); }
     });
@@ -294,8 +303,8 @@ function _updateMascotsTransform() {
   const cy = _mascots.clientY;
 
   // normaliza -1..1 com base no centro do elemento
-  const relX = ((cx - (rect.left + rect.width / 2)) / rect.width) * 2;
-  const relY = ((cy - (rect.top + rect.height / 2)) / rect.height) * 2;
+  const relX = ((cx - (rect.left + rect.width / 2)) / rect.width) * -2;
+  const relY = ((cy - (rect.top + rect.height / 2)) / rect.height) * -2;
   const clamp = (v) => Math.max(-1, Math.min(1, v));
   const nx = clamp(relX);
   const ny = clamp(relY);
@@ -372,13 +381,107 @@ onBeforeUnmount(() => {
   }
   _stopMascotsRaf();
 });
+
+// helpers to force scroll without relying on hashchange
+function _scrollToTop() {
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); }
+}
+
+// resilient anchor scroll: wait until target exists after route switches back to "/"
+function _scrollToAnchor(id) {
+  if (!id) return;
+
+  const header = document.querySelector('.topbar');
+  const headerOffset = header ? header.offsetHeight : 72;
+
+  const scrollToEl = (el) => {
+    const top = el.getBoundingClientRect().top + window.pageYOffset - headerOffset - 8;
+    try { window.scrollTo({ top, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, top); }
+  };
+
+  let attempts = 0;
+  const maxAttempts = 24; // ~24 * 50ms = ~1.2s
+  const tryFind = () => {
+    attempts++;
+    const target = document.getElementById(id);
+    if (target) {
+      scrollToEl(target);
+    } else if (attempts < maxAttempts) {
+      setTimeout(tryFind, 50);
+    }
+  };
+
+  // wait for DOM updates, then begin retries
+  nextTick(() => setTimeout(tryFind, 0));
+}
+
+// set up listeners once with stable references
+const _onNavAnchor = (e) => _scrollToAnchor(e?.detail?.id);
+
+onMounted(() => {
+  window.addEventListener("hashchange", _handleHashChange);
+  window.addEventListener('nav:home', _scrollToTop);
+  window.addEventListener('nav:anchor', _onNavAnchor);
+});
+
+// proper cleanup using same function refs
+onBeforeUnmount(() => {
+  window.removeEventListener("hashchange", _handleHashChange);
+  window.removeEventListener('nav:home', _scrollToTop);
+  window.removeEventListener('nav:anchor', _onNavAnchor);
+});
+
+// run once on init to honor current hash
+_handleHashChange();
+
+const lightboxVisible = ref(false);
+const currentLightboxIndex = ref(0);
+
+function openLightbox(index) {
+  currentLightboxIndex.value = index;
+  lightboxVisible.value = true;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightboxVisible.value = false;
+  document.body.style.overflow = '';
+}
+
+function nextImage() {
+  currentLightboxIndex.value = (currentLightboxIndex.value + 1) % carouselImages.value.length;
+}
+
+function prevImage() {
+  currentLightboxIndex.value = (currentLightboxIndex.value - 1 + carouselImages.value.length) % carouselImages.value.length;
+}
+
+// Keyboard navigation for lightbox
+onMounted(() => {
+  const handleKeydown = (e) => {
+    if (!lightboxVisible.value) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+  };
+  window.addEventListener('keydown', handleKeydown);
+  
+  // Store for cleanup
+  if (!window._lightboxKeyHandler) {
+    window._lightboxKeyHandler = handleKeydown;
+  }
+});
+
+onBeforeUnmount(() => {
+  if (window._lightboxKeyHandler) {
+    window.removeEventListener('keydown', window._lightboxKeyHandler);
+  }
+});
 </script>
 
 <style scoped>
 .app-root {
   min-height: 100vh;
-  padding-top: 76px; /* desloca o conteúdo abaixo da navbar fixa (navbar height 72px + pequena folga) */
-  /* changed: usar cor sólida escura para remover a linha horizontal de dois tons */
   background: var(--bg);
   color: #f5f2eb;
   display: flex;
@@ -389,14 +492,17 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6rem;
-  align-items: center;
+  align-items: stretch;
   padding: 2rem 0;
   height: 70vh;
 }
 
 .hero-left {
   text-align: left;
-  position: relative; /* added so ::before can be positioned relative to this block */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* ensure hero text and CTAs sit above the decorative circle */
@@ -410,7 +516,7 @@ onBeforeUnmount(() => {
   content: "";
   position: absolute;
   left: 5%;
-  top: 100%;
+  top: -20%;
   transform: translate(-50%, -50%);
   width: 250px;
   height: 250px;
@@ -419,26 +525,26 @@ onBeforeUnmount(() => {
   background: radial-gradient(
     circle at 30% 30%,
     rgba(212,175,55,0.95) 0%,
-    rgba(212,175,55,0.72) 20%,
+    rgba(212,175,55,0.72) 10%,
     rgba(212,175,55,0.30) 42%,
     rgba(212,175,55,0.08) 65%,
     rgba(0,0,0,0) 80%
   );
   filter: blur(150px);
-  opacity: 0.25;
+  opacity: 0.5;
   z-index: 0;
   pointer-events: none;
   /* mix-blend-mode dá um brilho mais elegante sobre o fundo escuro */
   mix-blend-mode: screen;
+  animation: floatCircleLeft 12s linear infinite;
 }
 
 /* moving golden blurred circle behind hero-right image */
 .hero-right::before {
   content: "";
   position: absolute;
-  /* start near center-right of the image area */
   left: 62%;
-  top: 42%;
+  top: 58%;
   transform: translate(-50%, -50%);
   width: 320px;
   height: 320px;
@@ -451,26 +557,38 @@ onBeforeUnmount(() => {
     rgba(212,175,55,0.08) 62%,
     rgba(0,0,0,0) 80%
   );
-  filter: blur(120px);
+  filter: blur(100px);
   opacity: 0.5;
   z-index: 0;
   pointer-events: none;
   mix-blend-mode: screen;
-  /* animate position to create subtle circular motion */
   animation: floatCircle 10s linear infinite;
 }
 
 /* keyframes approximate a circular orbit by changing top/left */
 @keyframes floatCircle {
-  0%   { left: 62%; top: 42%; }
-  12.5%{ left: 70%; top: 50%; }
-  25%  { left: 62%; top: 58%; }
-  37.5%{ left: 54%; top: 50%; }
-  50%  { left: 62%; top: 42%; }
-  62.5%{ left: 70%; top: 50%; }
-  75%  { left: 62%; top: 58%; }
-  87.5%{ left: 54%; top: 50%; }
-  100% { left: 62%; top: 42%; }
+  0%   { left: 62%; top: 58%; }
+  12.5%{ left: 68%; top: 62%; }
+  25%  { left: 62%; top: 66%; }
+  37.5%{ left: 56%; top: 62%; }
+  50%  { left: 62%; top: 58%; }
+  62.5%{ left: 68%; top: 62%; }
+  75%  { left: 62%; top: 66%; }
+  87.5%{ left: 56%; top: 62%; }
+  100% { left: 62%; top: 58%; }
+}
+
+/* keyframes for hero-left blur */
+@keyframes floatCircleLeft {
+  0%   { left: 5%; top: -20%; }
+  12.5%{ left: 10%; top: -15%; }
+  25%  { left: 5%; top: -10%; }
+  37.5%{ left: 0%; top: -15%; }
+  50%  { left: 5%; top: -20%; }
+  62.5%{ left: 10%; top: -15%; }
+  75%  { left: 5%; top: -10%; }
+  87.5%{ left: 0%; top: -15%; }
+  100% { left: 5%; top: -20%; }
 }
 
 /* responsive: reduce size and blur on smaller viewports */
@@ -479,19 +597,40 @@ onBeforeUnmount(() => {
     width: 420px;
     height: 420px;
     filter: blur(60px);
-    left: 60%;
-    top: 38%;
     animation-duration: 12s;
   }
+  
+  @keyframes floatCircle {
+    0%   { left: 60%; top: 55%; }
+    12.5%{ left: 65%; top: 58%; }
+    25%  { left: 60%; top: 62%; }
+    37.5%{ left: 55%; top: 58%; }
+    50%  { left: 60%; top: 55%; }
+    62.5%{ left: 65%; top: 58%; }
+    75%  { left: 60%; top: 62%; }
+    87.5%{ left: 55%; top: 58%; }
+    100% { left: 60%; top: 55%; }
+  }
 }
+
 @media (max-width: 640px) {
   .hero-right::before {
     width: 320px;
     height: 320px;
     filter: blur(42px);
-    left: 54%;
-    top: 44%;
     animation-duration: 14s;
+  }
+  
+  @keyframes floatCircle {
+    0%   { left: 58%; top: 52%; }
+    12.5%{ left: 62%; top: 55%; }
+    25%  { left: 58%; top: 58%; }
+    37.5%{ left: 54%; top: 55%; }
+    50%  { left: 58%; top: 52%; }
+    62.5%{ left: 62%; top: 55%; }
+    75%  { left: 58%; top: 58%; }
+    87.5%{ left: 54%; top: 55%; }
+    100% { left: 58%; top: 52%; }
   }
 }
 
@@ -505,13 +644,29 @@ onBeforeUnmount(() => {
 
 /* gradient only for selected words */
 .gold-text {
-  background: linear-gradient(225deg, var(--gold-1), var(--gold-2));
+  background: linear-gradient(90deg, 
+    var(--gold-1) 0%, 
+    var(--gold-2) 25%, 
+    var(--gold-1) 50%, 
+    var(--gold-2) 75%, 
+    var(--gold-1) 100%
+  );
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
-  /* keep slight separation if needed */
   line-height: 1.05;
+  animation: goldShift 3s linear infinite;
+}
+
+@keyframes goldShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
 }
 
 .subtitle {
@@ -530,18 +685,24 @@ onBeforeUnmount(() => {
   background: rgba(212,175,55);
   color: #ffffff;
   font-weight: 700;
-  /* added: allow transform/scale to work on the anchor */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transform-origin: center;
   transition: transform 160ms ease, box-shadow 160ms ease, opacity 120ms ease;
   will-change: transform, box-shadow;
+  animation: pulse 2s ease-in-out infinite;
 }
 .primary:hover {
   transform: scale(1.04);
   box-shadow: 0 12px 34px rgba(212,175,55,0.12);
   opacity: 0.98;
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .ghost {
@@ -558,7 +719,6 @@ onBeforeUnmount(() => {
 .ghost:hover {
   transform: scale(1.04);
   box-shadow: 0 12px 34px rgba(212,175,55,0.12);
-  color: rgba(212,175,55);
 }
 
 
@@ -566,7 +726,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative; /* added: allow absolute pseudo-element behind the image */
+  position: relative;
 }
 
 /* ensure image sits above the animated blur */
@@ -703,7 +863,7 @@ onBeforeUnmount(() => {
   text-decoration: none;
   color: #ffffff;
   font-weight: 700;
-  background: linear-gradient(225deg, #0880d5 0%, #0b63a2 100%);
+  background: rgba(212,175,55);
   border: 1px solid rgba(2,136,209,0.12);
   box-shadow: 0 8px 24px rgba(2,136,209,0.06);
   transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
@@ -726,7 +886,7 @@ onBeforeUnmount(() => {
 
 /* variant subtle: darker for Copy Trade to differentiate */
 .tg-copy {
-  background: linear-gradient(225deg, #0880d5 0%, #0b63a2 100%);
+  background: rgba(212,175,55);
   border: 1px solid rgba(184,134,11,0.12);
   color: #ffffff;
 }
@@ -785,7 +945,6 @@ onBeforeUnmount(() => {
 /* container: usar max-width e padding responsivo */
 .container {
   width: 80vw;
-  max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -795,5 +954,224 @@ onBeforeUnmount(() => {
   .mascots { border-radius: 14px; border-width: 1px; }
   .hero-left h1 { font-size: 1.4rem; }
   .subtitle { margin-bottom: 1.4rem; font-size: 0.95rem; }
+}
+
+.section-lead {
+  color: rgba(245,242,235,0.72);
+  max-width: 920px;
+  margin: 0 auto 1.8rem;
+  line-height: 1.6;
+}
+
+/* Carousel Section - full width */
+.carousel-section {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow: hidden;
+  padding: 4rem 0;
+  background: transparent;
+}
+
+/* Gradient overlays on left and right edges */
+.carousel-section::before,
+.carousel-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 5%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.carousel-section::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+}
+
+.carousel-section::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+}
+
+.carousel-track {
+  display: flex;
+  gap: 2rem;
+  animation: scroll 30s linear infinite;
+  width: max-content;
+}
+
+.carousel-item {
+  flex-shrink: 0;
+  width: 320px;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(212,175,55,0.2);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(212,175,55,0.2);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50%));
+  }
+}
+
+/* Pause animation on hover */
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+/* Responsive carousel */
+@media (max-width: 640px) {
+  .carousel-item {
+    width: 240px;
+    height: 150px;
+  }
+  
+  .carousel-section::before,
+  .carousel-section::after {
+    width: 20%;
+  }
+}
+
+/* Lightbox styles */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 2.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 160ms ease, transform 160ms ease;
+  z-index: 10001;
+}
+
+.lightbox-close:hover {
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.1);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 3rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 160ms ease, transform 160ms ease;
+  line-height: 1;
+  z-index: 10001;
+}
+
+.lightbox-prev {
+  left: 2rem;
+}
+
+.lightbox-next {
+  right: 2rem;
+}
+
+.lightbox-nav:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (max-width: 768px) {
+  .lightbox-nav {
+    width: 50px;
+    height: 50px;
+    font-size: 2.5rem;
+  }
+  
+  .lightbox-prev {
+    left: 1rem;
+  }
+  
+  .lightbox-next {
+    right: 1rem;
+  }
+  
+  .lightbox-close {
+    width: 45px;
+    height: 45px;
+    font-size: 2rem;
+    top: 1rem;
+    right: 1rem;
+  }
 }
 </style>
